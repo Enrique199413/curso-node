@@ -1,0 +1,20 @@
+{
+  "name": "expresshelloworld",
+  "version": "1.0.0",
+  "description": "an express.js try",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "author": "Ricardo Sarabia",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^9.0.1"
+  }
+}
