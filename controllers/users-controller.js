@@ -27,6 +27,7 @@ const getLenguajesProgramacion = async () => {
 }
 
 // Add new user
-exports.addUser = async (req, res) => { 
-  res.status(201).json({addedUser:'Richie'}) 
+exports.addUser = async (req, res) => {
+  const addedUser = await airtableApi.postPersonaEnElCurso({}).catch(console.error)
+  res.status(201).json(addedUser) 
 }
