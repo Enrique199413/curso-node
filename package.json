@@ -1,7 +1,7 @@
 {
-  "name": "expresshelloworld",
-  "version": "1.0.0",
-  "description": "an express.js try",
+  "name": "node.js_practice",
+  "version": "0.0.1",
+  "description": "node.js practice",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
