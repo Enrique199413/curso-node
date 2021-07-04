@@ -106,6 +106,114 @@ app.get('/getAitTableUsers', (req, res) => {
 })
 
 
+/**
+ * Tercera Tarea
+ * Realizar merge de 3 tablas:
+ * - Personas en el curso,
+ * - Lenguajes de programación,
+ * - Personas Lenguajes
+ */
+app.get('/getAitTableUsers3', async (req, res) => {
+    console.log(process.env['AIR_TABLE_APIKEY'])
+
+    if (!AIRTABLE_API_KEY) {
+        //Error
+        res.status({
+            status: 404,
+            message: `dddd`
+        })
+    }
+    const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
+    const urlLenguajesTable = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion'
+    const urlPersonasLenguajes = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/PersonasLenguajes'
+    const option = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+        }
+    }
+
+    //variables para guardar las peticiones
+    let personasRq, lenguajesPErsonasRq
+
+    let responseStatus = 200
+
+    // Peticion 1: Lista de personas
+    await fetch(url, option).then(response => {
+        //console.log(response)
+        if (response.status != 200) {
+
+        }
+        return response.json()
+
+    }).then(persons => {
+
+        personasRq = persons
+
+    })
+
+    // Peticion 2 Lista de relación, lenguajes personas
+    await fetch(urlPersonasLenguajes, option).then(response => {
+        console.log("respuesta lenguajes9")
+        //console.log(response)
+        if (response.status != 200) {
+
+        }
+        return response.json()
+
+    }).then(languages => {
+        // console.log(languages)
+        lenguajesPErsonasRq = languages
+
+
+    })
+
+    // Peticion 3: Lista de lenguajes y hacer la logica
+    await fetch(urlLenguajesTable, option).then(response => {
+        console.log("respuesta solo lenguajes")
+        //console.log(response)
+        //console.log(response)
+        if (response.status != 200) {
+
+        }
+        return response.json()
+
+    }).then(languages => {
+        const personWithLenguajes = personasRq.records.filter(({fields}) => fields.PersonasLenguajes)
+
+        // todas las personas
+        personWithLenguajes.map(persona => {
+            persona.fields.PersonasLenguajes.map(idlenguajepersona => {
+
+                //------------------
+                const lenuajePersonaDomina = lenguajesPErsonasRq.records.find(element => element.id == idlenguajepersona)
+
+                // Quitar/reemplazar el id
+                persona.fields.PersonasLenguajes = []
+                lenuajePersonaDomina.fields.LenguajesQueDomina.map(lenguajesQueDominaId => {
+                    let objLenguaje = languages.records.find(element => element.id == lenguajesQueDominaId)
+
+                    persona.fields.PersonasLenguajes.push(objLenguaje.fields.Name)
+
+                })
+            })
+
+        })
+
+        res.status(responseStatus).json({
+            message: 'Lista de personas con correo de GFT y que tengan los lenguajes que dominan',
+            count: personWithLenguajes.length,
+            data: personWithLenguajes
+        })
+
+
+    })
+
+
+})
+
+
+
 
 app.listen(port, () => {
     console.log(`aqui estoy http://localhost:${port}`)
