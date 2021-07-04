@@ -213,6 +213,92 @@ app.get('/getAitTableUsers3', async (req, res) => {
 })
 
 
+// Lunes semana 2
+
+app.get('/user/all', async (req, res) => {
+    try {
+        const resposeUser = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?maxRecords=3&view=Grid%20view', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+            }
+        })
+
+        console.log(resposeUser, `DATA`)
+
+        const allUser = await resposeUser.json()
+
+        res.status(200).json({
+            count: allUser.records,
+            data: allUser.records
+        })
+
+    } catch (e) {
+        console.log('exception', e)
+        res.status(400).json(JSON.stringify(e))
+
+    }
+})
+
+
+// Read fields with controller moduler
+app.get('/user/all/controller', async (req, res) => {
+
+    try {
+        const allUsers = await readUser()
+
+        console.log(allUsers, 'alll')
+        res.status(200).json(allUsers)
+
+    } catch (e) {
+        console.log('conredfv', e)
+        res.status(400).json(JSON.stringify(e))
+
+    }
+})
+
+/**
+ * Cuarta tarea
+ * Agregar persona y eliminar a una persona conectandonos a Airtable
+ */
+app.post('/user/add', async (req, res) => {
+
+    try {
+        console.log(req)
+        const allUsers = await addUser()
+
+        //console.log(allUsers, 'alll')
+        //res.status(200).json(allUsers)
+
+    } catch (e) {
+        console.log('conredfv', e)
+        res.status(400).json(JSON.stringify(e))
+
+    }
+})
+
+/**
+ * Cuarta tarea
+ * Agregar persona y eliminar a una persona conectandonos a Airtable
+ *
+ * Metodo para eliminar un registro de una persona por el id, recuperado como parametro
+ */
+app.delete('/user/delete/:id', async (req, res) => {
+
+    try {
+        const {params: {id}} = req
+        console.log(id)
+        const allUsers = await deleteUser(id)
+
+        //console.log(allUsers, 'alll')
+        res.status(200).json(allUsers)
+
+    } catch (e) {
+        //console.log('conredfv', e)
+        res.status(400).json(JSON.stringify(e))
+
+    }
+})
 
 
 app.listen(port, () => {
