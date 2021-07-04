@@ -1,73 +1,122 @@
-// CRUD - CREATE READ UPDATE DELETE
+const fetch = require('node-fetch')
+// const AIRTABLE_API_KEY = process.env['AIRTABLE_API_KEY']
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
+// CRUD . CREATE READ UPDATE DELETE
 
-const fetch = require('node-fetch');
-const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
+const addUser= async () => {
+    //TODO add user data
 
-
-const addUser = async (data) => {
-    //todo add user data
+    // insertar UNO
+    const data = {
+        "fields": {
+            "Name": "PruebaROHE2",
+            "Apellido": "PostmanValidar2",
+            "Cliente": "PruebaROHE2",
+            "4letras": "ROHE2"
+        },
+        "typecast": true
+    }
+    // insertar una lista de hasta 10
+    const data10 = {
+        "records": [
+            {
+                "fields": {
+                    "Name": "PruebaROHE2",
+                    "Apellido": "PostmanValidar2",
+                    "Cliente": "PruebaROHE2",
+                    "4letras": "ROHE2"
+                }
+            },
+            {
+                "fields": {
+                    "Name": "PruebaROHE2",
+                    "Apellido": "PostmanValidar2",
+                    "Cliente": "PruebaROHE2",
+                    "4letras": "ROHE2"
+                }
+            }
+        ],
+        // Conversion de datos
+        "typecast": true
+    }
     try {
-        const responseUsers = await fetch(
-            'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', {
+        const resposeUser = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${airtableAPIKey}`,
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        } )
+        })
 
-        const resp = await responseUsers.json()
-        return resp
-    } catch (e) {
-        res.status(404)
+        console.log(resposeUser, `DATA`)
+
+        const allUser = await resposeUser.json()
+        console.log(allUser)
+
+        return {
+            create: true,
+            data: allUser
+        }
+
+    }catch (e) {
+        return { error: 404}
+
     }
 }
 
-const updateUser = () => {
-    //todo update user
+const updateUser= () => {
+    //TODO update user data
 }
 
-const deleteUser = async(id) => {
-    //todo delete user
+const deleteUser= async (id) => {
+    //TODO delete user data
+    console.log(AIRTABLE_API_KEY, 'SDFVBFGD')
     try {
-        const responseUsersDelete = await fetch(
-            `https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?records[]=${id}`, {
+        const resposeUser = await fetch(`https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso/${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${airtableAPIKey}`
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
             }
-        } )
+        })
 
-        const allUsers = await responseUsersDelete.json()
+        //console.log(resposeUser, `DATA`)
+
+        const allUser = await resposeUser.json()
 
         return {
-            data: allUsers
+            data: allUser
         }
-    } catch (e) {
-        res.status(404)
+
+    }catch (e) {
+        return { error: 404}
+
     }
 }
 
-const readUser = async(count) => {
-    //todo read user
+const readUser= async () => {
+    //TODO read user data
+    console.log(AIRTABLE_API_KEY, 'SDFVBFGD')
     try {
-        const responseUsers = await fetch(
-            'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', {
+        const resposeUser = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?maxRecords=3&view=Grid%20view', {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${airtableAPIKey}`
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
             }
-        } )
+        })
 
-        const allUsers = await responseUsers.json()
+        console.log(resposeUser, `DATA`)
+
+        const allUser = await resposeUser.json()
 
         return {
-            count: count,
-            data: allUsers.records
+            count: allUser.records.length,
+            data: allUser.records
         }
-    } catch (e) {
-        res.status(404)
+
+    }catch (e) {
+        return { error: 404}
+
     }
 }
 
@@ -77,3 +126,6 @@ module.exports.User = {
     deleteUser,
     readUser
 }
+
+
+
