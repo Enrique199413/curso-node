@@ -4,8 +4,11 @@ const fetch = require('node-fetch');
 const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
 let app = express();
 const { addUser, deleteUser, readUser } = require('./controllers/userController').User
+const authMiddeleware = require('./middlewares/auth')
+const manageErrors = require('./middlewares/manageErros')
 
 app.use(bodyParser.json());
+
 const port = 8080;
 
   
@@ -48,9 +51,7 @@ app.get('/getAirtableUsers', (req, res) => {
     })
 })
 
-/*
-  Tarea 3
-*/
+/* Tarea 3 */
 app.get('/getAirtableUsersLenguaje', (req, res) => {
     const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
     const url1 = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion?fields%5B%5D=Name&fields%5B%5D=PersonasLenguajes&filterByFormula=NOT%28%7BPersonasLenguajes%7D%20%3D%20%27%27%29'
@@ -98,14 +99,9 @@ app.get('/getAirtableUsersLenguaje', (req, res) => {
         })
     })
 })
-/*
-  Tarea 3
-*/
+/* Tarea 3 */
 
-/*
-  Tarea 4
-*/
-
+/* Tarea 4 */
 app.get('/users/all', async(req, res) => {
     try {
         const allUsers = await readUser()
@@ -150,10 +146,37 @@ app.delete('/users/delete/:id', async(req, res) => {
         res.status(400).json(JSON.stringify(e))
     }
 })
+/* Fin Tarea 4 */
 
-/*
-  Fin Tarea 4
-*/
+
+/*** Middeleware ****/
+app.use((req, res, next) => {
+    console.log('entro', Date.now());
+    next()
+})
+
+//middeleware Authorization
+app.use(authMiddeleware)
+//middeleware manageErrors
+app.use(manageErrors)
+
+app.get('/users/allM', (req, res, next) => {
+    console.log('estoy en el middeleware')
+    next()
+}, (req, res) => {
+    res.status(200).json({info: 'todo ok'})
+})
+
+app.get('/users/allError', (req, res, next) => {
+    try {
+        throw new Error('Algo se rompe')
+    } catch (error) {
+        next(error)
+    }
+}, (req, res) => {
+    res.status(200).json({info: 'todo ok'})
+})
+
   
 // Server setup
 app.listen(port, () => {
