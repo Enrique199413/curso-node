@@ -1,78 +1,49 @@
-const bodyParser = require('body-parser');
-const express = require('express');
-const fetch = require('node-fetch');
-const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
-let app = express();
-const { addUser, deleteUser, readUser } = require('./controllers/userController').User
+const bodyParser = require('body-parser')
+const express = require('express')
+const dotenv = require('dotenv').config()
+const fetch = require('node-fetch')
+const errorCode = require('./test/mock/errorCodes')
+const { createUser, deleteUser, readUsers } = require('./controllers/crudController').User
 
-app.use(bodyParser.json());
-const port = 8080;
+console.log(fetch);
+let app = express()
+app.use(bodyParser.json())
+const port = 8081
 
-  
-// Route handling
+const allUrl = 'https://api.airtable.com/v0/appY2q7yIwLmh5mrh/Personas%20en%20el%20curso'
+const lpUrl = 'https://api.airtable.com/v0/appY2q7yIwLmh5mrh/LenguajesProgramacion'
+const plUrl = 'https://api.airtable.com/v0/appY2q7yIwLmh5mrh/PersonasLenguajes'
+
 app.get('/hola-mundo/suma', (req, res) => {
-    const {query: {a, b} } = req
-    const sumando = parseInt(a, 10)
-    const otroSumando = parseInt(b, 10)
-    if (!isNaN(sumando) && !isNaN(otroSumando)) {
-        res.send(`la suma de ${a} + ${b} es ${sumando + otroSumando}`)
+    
+    const {query: {a, b}} = req
+    const sumando = parseInt(a,10)
+    const otroSumando = parseInt(b,10);
+    if(!isNaN(sumando) && !isNaN(otroSumando)) {
+        res.send(`La suma de ${a} + ${b} es ${sumando + otroSumando}`)
     } else {
-        res.status(400).json( {
-            message: `por favor especifica valores númericos para la suma, ${a}, ${b}`,
-            code: 400
-        })
+        res.status(400).json(errorCode.errorWhenIsNotNumeric(a,b))
     }
-});
-
-app.get('/getAirtableUsers', (req, res) => {
-    const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${airtableAPIKey}`
-        }
-    }
-    let responseStatus = 200;
-    fetch(url, options).then(response => {
-        if (response.status !=200 ) {
-            responseStatus = response.status;
-        }
-        return response.json()
-    }).then(persons => {
-        const personsWhitEmail = persons.records.filter(({fields}) => fields.CorreoGFT)
-
-        res.status(200).json({
-            count: personsWhitEmail.length,
-            data: personsWhitEmail 
-        })
-    })
+    
 })
-
-/*
-  Tarea 3
-*/
-app.get('/getAirtableUsersLenguaje', (req, res) => {
+/**
+ * Tarea 2
+ */
+app.get('/airTable/allUsers', (req,res) => {
+    
+    const airtableAPIKey = process.env.AIRTABLE_APIKEY
+    console.log(airtableAPIKey)
+    if(!airtableAPIKey){
+        res.status(401).json({code:401});
+    }
     const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
-    const url1 = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion?fields%5B%5D=Name&fields%5B%5D=PersonasLenguajes&filterByFormula=NOT%28%7BPersonasLenguajes%7D%20%3D%20%27%27%29'
     const options = {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${airtableAPIKey}`
         }
     }
-    let personsWhitEmail;
     let responseStatus = 200;
-
-    function findName (datas, id) {
-        let lenguajes = [];
-        datas.forEach(data => {
-            if (data.fields.PersonasLenguajes.find(element => element === id)) {
-                lenguajes.push(data.fields.Name)
-            }
-        });
-        return lenguajes;
-    }
-
     fetch(url, options).then(response => {
         if (response.status !=200 ) {
             responseStatus = response.status;
@@ -80,84 +51,130 @@ app.get('/getAirtableUsersLenguaje', (req, res) => {
         return response.json()
     }).then(persons => {
         personsWhitEmail = persons.records.filter(({fields}) => fields.CorreoGFT)
-        fetch(url1, options).then(response => {
-            if (response.status !=200 ) {
-                responseStatus = response.status;
-            }
-            return response.json()
-        }).then(lenguajes => {
-            personsWhitEmail.map((persons) => {
-                if (persons.fields.PersonasLenguajes) {
-                    persons.fields.PersonasLenguajes = findName(lenguajes.records, persons.fields.PersonasLenguajes[0])
-                }
-            });
-    
-            res.status(200).json({
-                data: personsWhitEmail
-            })
+        console.log(personsWhitEmail)
+        res.status(responseStatus).json({
+            count: personsWhitEmail.length,
+            data: personsWhitEmail
         })
-    })
+    }).catch(error => {
+        console.log("ERROR")
+        console.log(error)
+        res.status(400).json(errorCode.errorWhenFetchingAll)
+    });
 })
-/*
-  Tarea 3
-*/
+/** Fin Tarea 2 */
 
-/*
-  Tarea 4
-*/
-
-app.get('/users/all', async(req, res) => {
-    try {
-        const allUsers = await readUser()
-        console.log('SUCCESS', allUsers)
-        res.status(200).json(allUsers)
-    } catch (e) {
-        console.log('ERROR')
-        res.status(400).json(JSON.stringify(e))
+/**
+ * Tarea 3
+ */
+ app.get('/airTable/allUsers/merge', (req,res) => {
+    
+    const airtableAPIKey = process.env.AIRTABLE_APIKEY_MAC
+    console.log(airtableAPIKey)
+    if(!airtableAPIKey){
+        res.status(401).json({code:401});
     }
-})
-
-app.post('/users/add', async (req, res) => {
-    const data = {
-        "records": [
-          {
-            "fields": {
-              "Name": "test Rafael",
-              "Apellido": "Ayala",
-              "CorreoGFT": "iaaf@gft.com",
-              "Cliente": "Santander"
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${airtableAPIKey}`
+        }
+    }
+    let responseStatus = 200;
+    Promise.all([
+        fetch(allUrl, options),
+        fetch(plUrl, options),
+        fetch(lpUrl, options)
+    ]).then(responses => {
+        return Promise.all(responses.map((response) => {
+            return response.json();
+        }));
+    }).then(data => {
+        let personsInCourse = data[0].records;
+        const personsLanguages = data[1].records;
+        const programingLanguages = data[2].records;
+        let personasArray;
+        let updatedPerson = [];
+        let descLanguages = [];
+        personsInCourse.forEach(element => {
+            personasArray = element;
+            if(personasArray.fields.PersonasLenguajes) {
+                console.log("Validando personasLenguajes")
+                console.log(personasArray.fields.Name)
+                personasArray.fields.PersonasLenguajes.forEach(perLenId => {
+                    console.log("comparando ids");
+                    personsLanguages.forEach(pl => { 
+                        if(perLenId == pl.id){
+                            console.log(pl.fields.LenguajesQueDomina);
+                            descLanguages = new Array();
+                            pl.fields.LenguajesQueDomina.forEach(languagesId => {
+                                console.log(languagesId)
+                                programingLanguages.forEach(descLang => {
+                                    if(languagesId==descLang.id) {
+                                        descLanguages.push(descLang.fields.Name)
+                                        console.log(descLang.fields.Name);
+                                    }
+                                })
+                                console.log(descLanguages);
+                            })
+                        }
+                    })
+                })
+                personasArray.fields.PersonasLenguajes = descLanguages;
             }
-          }
-        ]
-      }
+            updatedPerson.push(personasArray);
+        });
+        console.log(updatedPerson)
+        res.status(responseStatus).json({
+            count: updatedPerson.length,
+            data: updatedPerson
+        })
+
+    }).catch(error => {
+        console.log("ERROR")
+        console.log(error)
+        res.status(400).json(errorCode.errorWhenFetchingAll)
+    });
+})
+/** Fin Tarea 3 */
+
+
+/**
+ * Tarea 4
+ */
+app.post('/airTable/users/add', async (req, res) => {
+    //console.log(req.body)
+    const inputBody = req.body
+    const data = {
+        "records": [inputBody]
+    }
+    
     try {
-        const allUsers = await addUser(data)
-        console.log('SUCCESS', allUsers)
-        res.status(200).json(allUsers)
+        const userCreated = await createUser(data)
+        console.log('SUCCESS', userCreated)
+        res.status(200).json(userCreated)
     } catch (e) {
         console.log('ERROR')
         res.status(400).json(JSON.stringify(e))
     }
 })
 
-app.delete('/users/delete/:id', async(req, res) => {
+app.delete('/airTable/users/delete/:id', async(req, res) => {
     try {
-        const resp = await deleteUser(req.params.id)
-        console.log('SUCCESS', resp)
-        res.status(200).json(resp)
+        const paramId = req.params.id;
+        console.log(paramId)
+        const resDeleted = await deleteUser(req.params.id)
+        console.log('SUCCESS', resDeleted)
+        res.status(200).json(resDeleted)
     } catch (e) {
         console.log('ERROR')
         res.status(400).json(JSON.stringify(e))
     }
 })
+/**** Fin tarea 4*/
 
-/*
-  Fin Tarea 4
-*/
-  
-// Server setup
 app.listen(port, () => {
-    console.log(`Estamos en el puerto: ${port}`);
-});
+    console.log(`Example app listening at http://localhost: ${port}`)
+})
 
 module.exports = app;
