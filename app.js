@@ -4,20 +4,23 @@ const fetch = require('node-fetch');
 const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
 let app = express();
 const { addUser, deleteUser, readUser } = require('./controllers/userController').User
+const programingLanguageRoutes = require('./controllers/programingLanguages/programingLanguage.router')
+app.use('/language', programingLanguageRoutes)
 
 app.use(bodyParser.json());
 const port = 8080;
 
-  
+
+
 // Route handling
 app.get('/hola-mundo/suma', (req, res) => {
-    const {query: {a, b} } = req
+    const { query: { a, b } } = req
     const sumando = parseInt(a, 10)
     const otroSumando = parseInt(b, 10)
     if (!isNaN(sumando) && !isNaN(otroSumando)) {
         res.send(`la suma de ${a} + ${b} es ${sumando + otroSumando}`)
     } else {
-        res.status(400).json( {
+        res.status(400).json({
             message: `por favor especifica valores númericos para la suma, ${a}, ${b}`,
             code: 400
         })
@@ -34,16 +37,16 @@ app.get('/getAirtableUsers', (req, res) => {
     }
     let responseStatus = 200;
     fetch(url, options).then(response => {
-        if (response.status !=200 ) {
+        if (response.status != 200) {
             responseStatus = response.status;
         }
         return response.json()
     }).then(persons => {
-        const personsWhitEmail = persons.records.filter(({fields}) => fields.CorreoGFT)
+        const personsWhitEmail = persons.records.filter(({ fields }) => fields.CorreoGFT)
 
         res.status(200).json({
             count: personsWhitEmail.length,
-            data: personsWhitEmail 
+            data: personsWhitEmail
         })
     })
 })
@@ -52,55 +55,55 @@ app.get('/getAirtableUsers', (req, res) => {
   Tarea 3
 */
 app.get('/getAirtableUsersLenguaje', (req, res) => {
-    const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
-    const url1 = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion?fields%5B%5D=Name&fields%5B%5D=PersonasLenguajes&filterByFormula=NOT%28%7BPersonasLenguajes%7D%20%3D%20%27%27%29'
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${airtableAPIKey}`
-        }
-    }
-    let personsWhitEmail;
-    let responseStatus = 200;
-
-    function findName (datas, id) {
-        let lenguajes = [];
-        datas.forEach(data => {
-            if (data.fields.PersonasLenguajes.find(element => element === id)) {
-                lenguajes.push(data.fields.Name)
+        const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso'
+        const url1 = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion?fields%5B%5D=Name&fields%5B%5D=PersonasLenguajes&filterByFormula=NOT%28%7BPersonasLenguajes%7D%20%3D%20%27%27%29'
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${airtableAPIKey}`
             }
-        });
-        return lenguajes;
-    }
-
-    fetch(url, options).then(response => {
-        if (response.status !=200 ) {
-            responseStatus = response.status;
         }
-        return response.json()
-    }).then(persons => {
-        personsWhitEmail = persons.records.filter(({fields}) => fields.CorreoGFT)
-        fetch(url1, options).then(response => {
-            if (response.status !=200 ) {
+        let personsWhitEmail;
+        let responseStatus = 200;
+
+        function findName(datas, id) {
+            let lenguajes = [];
+            datas.forEach(data => {
+                if (data.fields.PersonasLenguajes.find(element => element === id)) {
+                    lenguajes.push(data.fields.Name)
+                }
+            });
+            return lenguajes;
+        }
+
+        fetch(url, options).then(response => {
+            if (response.status != 200) {
                 responseStatus = response.status;
             }
             return response.json()
-        }).then(lenguajes => {
-            personsWhitEmail.map((persons) => {
-                if (persons.fields.PersonasLenguajes) {
-                    persons.fields.PersonasLenguajes = findName(lenguajes.records, persons.fields.PersonasLenguajes[0])
+        }).then(persons => {
+            personsWhitEmail = persons.records.filter(({ fields }) => fields.CorreoGFT)
+            fetch(url1, options).then(response => {
+                if (response.status != 200) {
+                    responseStatus = response.status;
                 }
-            });
-    
-            res.status(200).json({
-                data: personsWhitEmail
+                return response.json()
+            }).then(lenguajes => {
+                personsWhitEmail.map((persons) => {
+                    if (persons.fields.PersonasLenguajes) {
+                        persons.fields.PersonasLenguajes = findName(lenguajes.records, persons.fields.PersonasLenguajes[0])
+                    }
+                });
+
+                res.status(200).json({
+                    data: personsWhitEmail
+                })
             })
         })
     })
-})
-/*
-  Tarea 3
-*/
+    /*
+      Tarea 3
+    */
 
 /*
   Tarea 4
@@ -117,19 +120,17 @@ app.get('/users/all', async(req, res) => {
     }
 })
 
-app.post('/users/add', async (req, res) => {
+app.post('/users/add', async(req, res) => {
     const data = {
-        "records": [
-          {
+        "records": [{
             "fields": {
-              "Name": "test Rafael",
-              "Apellido": "Ayala",
-              "CorreoGFT": "iaaf@gft.com",
-              "Cliente": "Santander"
+                "Name": "test Rafael",
+                "Apellido": "Ayala",
+                "CorreoGFT": "iaaf@gft.com",
+                "Cliente": "Santander"
             }
-          }
-        ]
-      }
+        }]
+    }
     try {
         const allUsers = await addUser(data)
         console.log('SUCCESS', allUsers)
@@ -154,7 +155,7 @@ app.delete('/users/delete/:id', async(req, res) => {
 /*
   Fin Tarea 4
 */
-  
+
 // Server setup
 app.listen(port, () => {
     console.log(`Estamos en el puerto: ${port}`);

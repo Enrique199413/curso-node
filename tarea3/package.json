@@ -1,0 +1,12 @@
+{
+    "name": "tarea3",
+    "version": "1.0.0",
+    "description": "Tarea3",
+    "main": "index.js",
+    "scripts": {
+        "test": "test",
+        "start": "nodemon lib/index"
+    },
+    "author": "",
+    "license": "ISC"
+}
