@@ -45,7 +45,9 @@ app.get('/hola-mundo/suma',(req,res) => {
 
 app.get('/getAirtableUsers',(req,res) => {
   const airtableAPIKey = process.env.AIRTABLE_APIKEY
-  const url = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?view=Grid%20view'
+  const urlPersonas = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?view=Grid%20view'
+  const urlLenguajes = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion'
+  const urlPersonasLeng = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/PersonasLenguajes'
   if(!airtableAPIKey) {
     res.status(401).json({code:401})
   }
@@ -57,6 +59,7 @@ app.get('/getAirtableUsers',(req,res) => {
   }
   let responseStatus = 200
 
+  /*
     fetch(url, options).then(response => {
       if(response.status !== 200) {
         responseStatus = response.status
@@ -69,7 +72,96 @@ app.get('/getAirtableUsers',(req,res) => {
         count: personWithEmail.length,
         data: personWithEmail
       })
+    })*/
+  
+  //Obtenermos personas
+  const personsList = fetch(urlPersonas, options).then(response => {
+    if(response.status !== 200) {
+      responseStatus = response.status
+    }
+    return response.json()
+  })
+
+  //Obtenemos Lenguajes
+  const languagesList = fetch(urlLenguajes, options).then(response => {
+    if(response.status !== 200) {
+      responseStatus = response.status
+    }
+    return response.json()
+  })
+
+  //Obtenemos personas/lenguajes
+  const personsLanguagesList= fetch(urlPersonasLeng, options).then(response => {
+    if(response.status !== 200) {
+      responseStatus = response.status
+    }
+    return response.json()
+  })
+
+  var listRelation = new Array
+  
+  personsList.then(persons => {   
+
+    personsLanguagesList.then(dataPersonsLang => {
+
+      languagesList.then(dataLanguages => {
+        for (const iteratorDataPersonsLang of dataPersonsLang.records) {
+          const list = iteratorDataPersonsLang.fields.LenguajesQueDomina
+          const item = {
+            'PersonasLenguajes': iteratorDataPersonsLang.id,
+            'listLanguages':[]
+          }
+          for (const iteratorLenguajesQueDomina of list) {
+            const elementFound = dataLanguages.records.find(element => element.id === iteratorLenguajesQueDomina)
+            item.listLanguages.push(elementFound.fields.Name)
+          }
+          listRelation.push(item)
+        }
+
+        const responseJson = new Array
+        
+        for (const iteratorPersons of persons.records) {
+
+          if (iteratorPersons.fields.PersonasLenguajes === undefined) {
+            responseJson.push(iteratorPersons)
+          } else {
+            for (const iteratorRelation of listRelation) {
+              if(iteratorPersons.fields.PersonasLenguajes == iteratorRelation.PersonasLenguajes) {
+                const objectResponse = {
+                  "id": "",
+                  "fields": {
+                    "Name": "",
+                    "Cliente": "",
+                    "4letras": "",
+                    "Apellido": "",
+                    "CorreoGFT":"",
+                    "Lenguajes": []
+                  },
+                  "createdTime": ""
+                }
+                
+                objectResponse.id = iteratorPersons.id
+                objectResponse.fields.Name = iteratorPersons.fields.Name
+                objectResponse.fields.Cliente = iteratorPersons.fields.Cliente
+                objectResponse.fields['4letras'] = iteratorPersons.fields['4letras']
+                objectResponse.fields.Apellido = iteratorPersons.fields.Apellido
+                objectResponse.fields.CorreoGFT = iteratorPersons.fields.CorreoGFT
+                objectResponse.fields.Lenguajes = iteratorRelation.listLanguages
+                objectResponse.createdTime = iteratorPersons.createdTime
+                responseJson.push(objectResponse)
+              }
+            }
+          }
+        }
+        console.log(responseJson.length)
+        res.status(responseStatus).json({
+          count: responseJson.length,
+          data: responseJson
+        })
+
+      })
     })
+  })
 })
 
 app.get('/user/allUsers', async (req, res) => {
