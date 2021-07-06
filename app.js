@@ -146,14 +146,13 @@ app.get('/getAirtableUsers',(req,res) => {
                 objectResponse.fields['4letras'] = iteratorPersons.fields['4letras']
                 objectResponse.fields.Apellido = iteratorPersons.fields.Apellido
                 objectResponse.fields.CorreoGFT = iteratorPersons.fields.CorreoGFT
-                objectResponse.fields.Lenguajes = iteratorRelation.listLanguages
+                objectResponse.fields.LenguajesQueDomina = iteratorRelation.listLanguages
                 objectResponse.createdTime = iteratorPersons.createdTime
                 responseJson.push(objectResponse)
               }
             }
           }
         }
-        console.log(responseJson.length)
         res.status(responseStatus).json({
           count: responseJson.length,
           data: responseJson

@@ -4,7 +4,20 @@ const AIRTABLE_APIKEY = process.env.AIRTABLE_APIKEY
 
 //CRUD
 const addUser = async(data) => {
-
+    try {
+        //console.log(data)
+        const responseCreate = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso',{
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${AIRTABLE_APIKEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        return await responseCreate.json()
+    } catch (error) {
+        return {error: 404}
+    }
 }
 
 const updateUser = () => {
@@ -12,6 +25,17 @@ const updateUser = () => {
 }
 
 const deleteUser = async(id) => {
+    try {
+        const responseCreate = await fetch(`https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso/${id}`,{
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${AIRTABLE_APIKEY}`
+            }
+        })
+        return await responseCreate.json()
+    } catch (error) {
+        return {error: 404}
+    }
 }
 
 const readUser = async() => {
