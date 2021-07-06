@@ -1,21 +1,27 @@
 // CRUD - CREATE READ UPDATE DELETE
 
 const fetch = require("node-fetch");
-const airtableAPIKey = process.env["AIRTABLE_APIKEY"];
+const AIRTABLE_APIKEY = process.env["AIRTABLE_APIKEY"];
+
+const urlUsers = "https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso"
+const options = {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${AIRTABLE_APIKEY}`
+  }
+}
+const optionsUpdate = {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${AIRTABLE_APIKEY}`,
+    "Content-Type": "application/json",
+  }
+}
 
 const addUser = async (data) => {
-  //todo add user data
   try {
-    const responseUsers = await fetch(
-      "https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${airtableAPIKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
+    const responseUsers = await fetch(urlUsers,
+      { ...optionsUpdate, body: JSON.stringify(data) }
     );
 
     const resp = await responseUsers.json();
@@ -30,45 +36,33 @@ const updateUser = () => {
 };
 
 const deleteUser = async (id) => {
-  //todo delete user
   try {
     const responseUsersDelete = await fetch(
-      `https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?records[]=${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${airtableAPIKey}`,
-        },
-      }
+      `${urlUsers}?records[]=${id}`,
+      { ...options, method: "DELETE" }
     );
 
-    const allUsers = await responseUsersDelete.json();
+    const deleteUser = await responseUsersDelete.json();
 
     return {
-      data: allUsers,
+      data: deleteUser,
     };
   } catch (e) {
     res.status(404);
   }
 };
 
-const readUser = async (count) => {
-  //todo read user
+const readUser = async () => {
   try {
     const responseUsers = await fetch(
-      "https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${airtableAPIKey}`,
-        },
-      }
+      urlUsers,
+      options
     );
 
     const allUsers = await responseUsers.json();
 
     return {
-      count: count,
+      count: allUsers.records.length,
       data: allUsers.records,
     };
   } catch (e) {

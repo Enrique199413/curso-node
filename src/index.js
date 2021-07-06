@@ -1,12 +1,14 @@
+require('dotenv').config()
 const bodyParser = require("body-parser");
 const express = require("express");
 const fetch = require("node-fetch");
-const AIRTABLE_APIKEY = process.env["AIRTABLE_APIKEY"];
 let app = express();
 const { addUser, deleteUser, readUser } =
   require("../controllers/userController").User;
 app.use(bodyParser.json());
-const port = 4000;
+const newUser = require('./mocks/usersDataFake').data;
+const AIRTABLE_APIKEY = process.env["AIRTABLE_APIKEY"];
+const port = process.env["PORT"];
 
 const url =
   "https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso";
@@ -30,7 +32,8 @@ app.get("/hola-mundo/suma", (req, res) => {
   }
 });
 
-app.get("/getAirtableUsers", (req, res) => {
+
+app.get("/getAirtableUsersWithEmail", (req, res) => {
   const options = {
     method: "GET",
     headers: {
@@ -46,28 +49,28 @@ app.get("/getAirtableUsers", (req, res) => {
       return response.json();
     })
     .then((persons) => {
-      const personsWhitEmail = persons.records.filter(
+      const personsWithEmail = persons.records.filter(
         ({ fields }) => fields.CorreoGFT
       );
 
       res.status(200).json({
-        count: personsWhitEmail.length,
-        data: personsWhitEmail,
+        count: personsWithEmail.length,
+        data: personsWithEmail,
       });
     });
 });
 
-app.get("/getAirtableUsersLenguaje", (req, res) => {
+app.get("/getAirtableUsersWithLanguages", (req, res) => {
   const options = {
     method: "GET",
     headers: {
       Authorization: `Bearer ${AIRTABLE_APIKEY}`,
     },
   };
-  let personsWhitEmail;
-  let responseStatus = 200;
+  let personsWithEmail;
+  const responseStatus = 200;
 
-  function findName(datas, id) {
+  function findLanguageName(datas, id) {
     let lenguajes = [];
     datas.forEach((data) => {
       if (data.fields.PersonasLenguajes.find((element) => element === id)) {
@@ -85,7 +88,7 @@ app.get("/getAirtableUsersLenguaje", (req, res) => {
       return response.json();
     })
     .then((persons) => {
-      personsWhitEmail = persons.records.filter(
+      personsWithEmail = persons.records.filter(
         ({ fields }) => fields.CorreoGFT
       );
       fetch(urlLanguages, options)
@@ -96,9 +99,9 @@ app.get("/getAirtableUsersLenguaje", (req, res) => {
           return response.json();
         })
         .then((lenguajes) => {
-          personsWhitEmail.map((persons) => {
+          personsWithEmail.map((persons) => {
             if (persons.fields.PersonasLenguajes) {
-              persons.fields.PersonasLenguajes = findName(
+              persons.fields.PersonasLenguajes = findLanguageName(
                 lenguajes.records,
                 persons.fields.PersonasLenguajes[0]
               );
@@ -106,7 +109,8 @@ app.get("/getAirtableUsersLenguaje", (req, res) => {
           });
 
           res.status(200).json({
-            data: personsWhitEmail,
+            count: personsWithEmail.length,
+            data: personsWithEmail,
           });
         });
     });
@@ -115,44 +119,26 @@ app.get("/getAirtableUsersLenguaje", (req, res) => {
 app.get("/users/all", async (req, res) => {
   try {
     const allUsers = await readUser();
-    console.log("SUCCESS", allUsers);
     res.status(200).json(allUsers);
   } catch (e) {
-    console.log("ERROR");
     res.status(400).json(JSON.stringify(e));
   }
 });
 
-app.post("/users/add", async (req, res) => {
-  const data = {
-    records: [
-      {
-        fields: {
-          Name: "test Rafael",
-          Apellido: "Ayala",
-          CorreoGFT: "iaaf@gft.com",
-          Cliente: "Santander",
-        },
-      },
-    ],
-  };
+app.post("/user/add", async (req, res) => {
   try {
-    const allUsers = await addUser(data);
-    console.log("SUCCESS", allUsers);
+    const allUsers = await addUser(newUser);
     res.status(200).json(allUsers);
   } catch (e) {
-    console.log("ERROR");
     res.status(400).json(JSON.stringify(e));
   }
 });
 
-app.delete("/users/delete/:id", async (req, res) => {
+app.delete("/user/delete/:id", async (req, res) => {
   try {
     const resp = await deleteUser(req.params.id);
-    console.log("SUCCESS", resp);
     res.status(200).json(resp);
   } catch (e) {
-    console.log("ERROR");
     res.status(400).json(JSON.stringify(e));
   }
 });
