@@ -10,15 +10,18 @@ const AIRTABLE_API_KEY = process.env['AIRTABLE_API_KEY']
 
 const authMiddleware = require('./middleware/auth')
 const manageError = require('./middleware/manageError')
+const programingLanguageRoutes = require('./controllers/programinglenguajes/programingLenguajes.router')
 
 // Opcion 1
 // const UserController = require('./controllers/userController').User
-const {readUser, addUser, deleteUser} = require('./controllers/userController').User
+// comentar para el uso de routas
+//const {readUser, addUser, deleteUser} = require('./controllers/userController').User
 
+app.use('/programingLenguajes', programingLanguageRoutes)
 
 // ejemplo middleware por APPLICATION
 // el middleware agrega next a su estructura
-app.use(authMiddleware)
+//app.use(authMiddleware)
 //app.use(manageError)
 
 
@@ -104,15 +107,13 @@ app.get('/getAitTableUsers', (req, res) => {
 
 
 })
-
-
 /**
  * Tercera Tarea
  * Realizar merge de 3 tablas:
  * - Personas en el curso,
  * - Lenguajes de programación,
  * - Personas Lenguajes
- */
+*/
 app.get('/getAitTableUsers3', async (req, res) => {
     console.log(process.env['AIR_TABLE_APIKEY'])
 
@@ -213,6 +214,11 @@ app.get('/getAitTableUsers3', async (req, res) => {
 })
 
 
+app.listen(port, () => {
+    console.log(`aqui corro http://localhost:${port}`)
+})
+
+
 // Lunes semana 2
 
 app.get('/user/all', async (req, res) => {
@@ -300,11 +306,29 @@ app.delete('/user/delete/:id', async (req, res) => {
     }
 })
 
+// ejemplo middleware por RUTA
+// el middleware agrega next a su estructura
+app.get('user/alll', (req, res, next) => {
+    console.log('middlware')
 
-app.listen(port, () => {
-    console.log(`aqui estoy http://localhost:${port}`)
+    // next()
+    res.json({info: 'pasa por aqui'})
+}, (req, res) => {
+    res.status(200).json({info: 'pasa por aqui'})
+
 })
 
+// Probocar el error
+app.get('/user/allError', async (req, res) => {
+    try {
+        throw new Error('algo sucedio')
+
+    } catch (e) {
+        console.log('exception', e)
+        next(e)
+
+    }
+})
 
 
 // para que la prueba tenga acceso

@@ -1,38 +1,55 @@
 const fecth = require('node-fetch')
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
-const urlLanguagesUser = 'http'
-const {fetchDefaulOptions} = requiere('')
+const urlLanguagesUser = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion'
+const {fetchDefaulOptions} = require('../../utils/utils')
 
-const addProgramingLanguajes = () => {
-
-}
-
-const uodateUSer = () => {
-
-}
-
-const deleteUser = () => {
-
-}
-
-const readProgramingLanguajes = async (count) => {
-    console.log(AIRTABLE_API_KEY, 'SDFVBFGD')
-    try {
-        const resposeProgramingLanguajes = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso?maxRecords=3&view=Grid%20view', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+const addProgramingLanguajes = async () => {
+    const data = {
+        "fields": {
+            "Name": "Python"
+        },
+        "typecast": true
+    }
+    // insertar una lista de hasta 10
+    const data10 = {
+        "records": [
+            {
+                "fields": {
+                    "Name": "Python"
+                }
+            },
+            {
+                "fields": {
+                    "Name": "Javascript",
+                    "PersonasLenguajes": [
+                        "recWP9cmqy1uALzDm",
+                        "rec4tJ8xcXrumnVPp",
+                        "recCrzHdzo8LmJOcL"
+                    ]
+                }
             }
+        ],
+        "typecast": true
+    }
+    try {
+        const resposeProgramingLanguajes = await fetch(urlLanguagesUser, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
 
-        console.log(resposeUser, `DATA`)
+        console.log(resposeProgramingLanguajes, `DATA`)
 
-        const allUser = await resposeUser.json()
+        const allProgramingL = await resposeProgramingLanguajes.json()
+        console.log(allProgramingL)
 
         return {
-            count: allUser.records.length,
-            data: allUser.records
+            create: true,
+            data: allProgramingL
         }
 
     }catch (e) {
@@ -42,5 +59,142 @@ const readProgramingLanguajes = async (count) => {
 
 }
 
+const updateUser = async (id) => {
 
-module.exports.ProgramingLanguajes = { readProgramingLanguajes}
+    const data = {
+        "fields": {
+            "Name": "Python"
+        },
+        "typecast": true
+    }
+    // insertar una lista de hasta 10
+    const data10 = {
+        "records": [
+            {
+                "fields": {
+                    "Name": "Python"
+                }
+            },
+            {
+                "fields": {
+                    "Name": "Javascript",
+                    "PersonasLenguajes": [
+                        "recWP9cmqy1uALzDm",
+                        "rec4tJ8xcXrumnVPp",
+                        "recCrzHdzo8LmJOcL"
+                    ]
+                }
+            }
+        ],
+        "typecast": true
+    }
+    try {
+        const resposeProgramingLanguajes = await fetch(urlLanguagesUser+ `/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        console.log(resposeProgramingLanguajes, `DATA`)
+
+        const allProgramingL = await resposeProgramingLanguajes.json()
+        console.log(allProgramingL)
+
+        return {
+            create: true,
+            data: allProgramingL
+        }
+
+    }catch (e) {
+        return { error: 404}
+
+    }
+}
+
+const deleteProgramingLanguajes = async (id) => {
+    //Cambiar option
+    try {
+        const statusDeleteProgramingLanguajes= await fetch(urlLanguagesUser + `/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+            }
+        })
+
+        console.log(statusDeleteProgramingLanguajes, `DATA`)
+
+        const allUser = await statusDeleteProgramingLanguajes.json()
+
+        return {
+            data: statusDeleteProgramingLanguajes
+        }
+    }catch (e) {
+        return { error: 404}
+
+    }
+
+}
+
+const readProgramingLanguajes = async (count) => {
+    console.log('si se ejecuts', urlLanguagesUser, fetchDefaulOptions)
+    try {
+
+        const option = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+            }
+        }
+
+        console.log('si se ejecuts', urlLanguagesUser, option)
+
+        console.log('33333')
+        const resposeProgramingLanguajes = await fetch(urlLanguagesUser, option)
+
+        console.log(resposeProgramingLanguajes)
+        console.log(resposeProgramingLanguajes, `DATA`)
+
+        const allLanguajes = await resposeProgramingLanguajes.json()
+
+        return {
+            count: count,
+            data: allLanguajes.records
+        }
+
+    }catch (e) {
+        return { error: 404}
+
+    }
+
+}
+
+const getByIdProgramingLanguajes = async (id) => {
+    //Cambiar option
+    try {
+        console.log(id)
+        const getProgramingLanguajes= await fetch(urlLanguagesUser + `/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+            }
+        })
+
+        console.log(getProgramingLanguajes, `DATA`)
+
+        const allUser = await getProgramingLanguajes.json()
+
+        return {
+            data: getProgramingLanguajes
+        }
+    }catch (e) {
+        return { error: 404}
+
+    }
+
+}
+
+
+module.exports.ProgramingLanguajes = { readProgramingLanguajes, deleteProgramingLanguajes, addProgramingLanguajes, getByIdProgramingLanguajes}
