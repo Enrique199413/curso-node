@@ -56,5 +56,46 @@ Router (CRUD)
 Controller (Lógica de leer)
 
 
+# TAREA para Martes 13 de Julio
 
+1.- Pruebas unitarias a utils.js -> utils -> test -> utils.test.js
+2.- Crear el método put en el router de users y actualizar un registro desde un id dado en el params y mandar el update en el body, recordar utilizar las validaciones
+```javascript
+router.put('/:id', getAllUsersHttp)
+```
+3.- Crear el método delete en el router de users y eliminar de bd
+4.- Generar en el get la lectura de QueryParams para poder filtrar la información generando el siguiente contrato:
+
+```
+GET: http://localhost:<port>/users/?name=Enrique
+GET: http://localhost:<port>/users/?lastName=Enrique
+GET: http://localhost:<port>/users/?surName=Enrique
+GET: http://localhost:<port>/users/?name=Enrique
+```
+### 200
+```json
+{
+  count: 2,
+  data: [
+    {
+      name: 'Enrique',
+      lastName: 'Lopez',
+      surName: 'Callejas',
+    },
+    {
+      name: 'Enrique',
+      lastName: 'Lopez',
+      surName: 'Callejas',
+    }
+  ]
+}
+```
+### 404
+```json
+{
+  count: 0,
+  data: []
+}
+```
+### Contemplar cuando no tenga nada en la consulta y enviar un No Content (http Code 404)
 
