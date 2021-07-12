@@ -17,6 +17,9 @@ const programingLanguageRoutes = require('./controllers/programinglenguajes/prog
 // comentar para el uso de routas
 //const {readUser, addUser, deleteUser} = require('./controllers/userController').User
 
+// Primero antes que todoo
+app.use(bodyParser.json())
+
 app.use('/programingLenguajes', programingLanguageRoutes)
 
 // ejemplo middleware por APPLICATION
@@ -271,7 +274,7 @@ app.post('/user/add', async (req, res) => {
 
     try {
         console.log(req)
-        const allUsers = await addUser()
+        const allUsers = await addUser(req.body)
 
         //console.log(allUsers, 'alll')
         //res.status(200).json(allUsers)

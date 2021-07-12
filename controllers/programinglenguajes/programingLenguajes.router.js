@@ -4,7 +4,7 @@ const programingLanguajes = require('./programingLenguajes.model').ProgramingLan
 router
     .post('/add', async (req, res) => {
         console.log('Entrando al post programing languages')
-        const addProgramingLanguajes = await programingLanguajes.addProgramingLanguajes()
+        const addProgramingLanguajes = await programingLanguajes.addProgramingLanguajes(req.body)
         console.log(addProgramingLanguajes)
         res.status(200).json(addProgramingLanguajes)
     })

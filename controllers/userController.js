@@ -3,42 +3,8 @@ const fetch = require('node-fetch')
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 // CRUD . CREATE READ UPDATE DELETE
 
-const addUser= async () => {
+const addUser= async (dataBody) => {
     //TODO add user data
-
-    // insertar UNO
-    const data = {
-        "fields": {
-            "Name": "PruebaROHE2",
-            "Apellido": "PostmanValidar2",
-            "Cliente": "PruebaROHE2",
-            "4letras": "ROHE2"
-        },
-        "typecast": true
-    }
-    // insertar una lista de hasta 10
-    const data10 = {
-        "records": [
-            {
-                "fields": {
-                    "Name": "PruebaROHE2",
-                    "Apellido": "PostmanValidar2",
-                    "Cliente": "PruebaROHE2",
-                    "4letras": "ROHE2"
-                }
-            },
-            {
-                "fields": {
-                    "Name": "PruebaROHE2",
-                    "Apellido": "PostmanValidar2",
-                    "Cliente": "PruebaROHE2",
-                    "4letras": "ROHE2"
-                }
-            }
-        ],
-        // Conversion de datos
-        "typecast": true
-    }
     try {
         const resposeUser = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', {
             method: 'POST',
@@ -46,7 +12,7 @@ const addUser= async () => {
                 'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dataBody)
         })
 
         console.log(resposeUser, `DATA`)

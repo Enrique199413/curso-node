@@ -4,34 +4,7 @@ const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 const urlLanguagesUser = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion'
 const {fetchDefaulOptions} = require('../../utils/utils')
 
-const addProgramingLanguajes = async () => {
-    const data = {
-        "fields": {
-            "Name": "Python"
-        },
-        "typecast": true
-    }
-    // insertar una lista de hasta 10
-    const data10 = {
-        "records": [
-            {
-                "fields": {
-                    "Name": "Python"
-                }
-            },
-            {
-                "fields": {
-                    "Name": "Javascript",
-                    "PersonasLenguajes": [
-                        "recWP9cmqy1uALzDm",
-                        "rec4tJ8xcXrumnVPp",
-                        "recCrzHdzo8LmJOcL"
-                    ]
-                }
-            }
-        ],
-        "typecast": true
-    }
+const addProgramingLanguajes = async (dataBody) => {
     try {
         const resposeProgramingLanguajes = await fetch(urlLanguagesUser, {
             method: 'POST',
@@ -39,7 +12,7 @@ const addProgramingLanguajes = async () => {
                 'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dataBody)
         })
 
         console.log(resposeProgramingLanguajes, `DATA`)
