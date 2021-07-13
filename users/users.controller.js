@@ -188,14 +188,13 @@ const deleteUser = async (id) => {
 
 }
 
-const getByParams = async ({name, lastName, surName}) => {
+const getByParams = async (paramsFilter) => {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    console.log('Controller', name, lastName, surName)
 
     try {
         await client.connect()
         const userCollection = client.db('users').collection('users')
-        const cursorUsers = userCollection.find({ name, lastName, surName})
+        const cursorUsers = await userCollection.find(paramsFilter)
         const data = []
         await cursorUsers.forEach(item => {
              data.push(item)

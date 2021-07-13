@@ -75,6 +75,15 @@ router.delete('/:id', (req, res, next) => {
     next()
 }, deleteUserHttp)
 
+/**
+ * Tarea 4: Para el martes 13 de julio
+ * Generar en el get la lectura de QueryParams para poder filtrar la información generando el siguiente contrato:
+ *    GET: http://localhost:<port>/users/?name=Enrique
+ *    GET: http://localhost:<port>/users/?lastName=Enrique
+ *    GET: http://localhost:<port>/users/?surName=Enrique
+ *    GET: http://localhost:<port>/users/?name=Enrique
+ */
+router.get('/d', getUserHttpByParams)
 
 module.exports.userRouter = router
 

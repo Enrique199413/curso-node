@@ -1,4 +1,4 @@
-const fecth = require('node-fetch')
+const fetch = require('node-fetch')
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 const urlLanguagesUser = 'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion'
@@ -32,11 +32,11 @@ const addProgramingLanguajes = async (dataBody) => {
 
 }
 
-const updateUser = async (id) => {
+const updatePrograminLanguaages = async (id) => {
 
     const data = {
         "fields": {
-            "Name": "Python"
+            "Name": "PHP update"
         },
         "typecast": true
     }
@@ -147,7 +147,8 @@ const readProgramingLanguajes = async (count) => {
 const getByIdProgramingLanguajes = async (id) => {
     //Cambiar option
     try {
-        console.log(id)
+        console.log('GET, by id', id)
+        console.log(urlLanguagesUser + `/${id}`)
         const getProgramingLanguajes= await fetch(urlLanguagesUser + `/${id}`, {
             method: 'GET',
             headers: {
@@ -170,4 +171,4 @@ const getByIdProgramingLanguajes = async (id) => {
 }
 
 
-module.exports.ProgramingLanguajes = { readProgramingLanguajes, deleteProgramingLanguajes, addProgramingLanguajes, getByIdProgramingLanguajes}
+module.exports.ProgramingLanguajes = { readProgramingLanguajes, deleteProgramingLanguajes, addProgramingLanguajes, updatePrograminLanguaages, getByIdProgramingLanguajes}

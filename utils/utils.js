@@ -67,7 +67,9 @@ const filterFinByParams = (params = {}, ...validProperties) => {
     console.log('params', params)
     console.log('validProperties', validProperties)
     const paramsKeys = Object.keys(params)
+    console.log('paramsKeys', paramsKeys)
 
+    /** Simplemente validar que tenga parametros*/
     if (existsKeysOnObject(paramsKeys)) {
         /*
         v1: crear una funcion para validar los params para consular, conforme la entrada
@@ -78,18 +80,30 @@ const filterFinByParams = (params = {}, ...validProperties) => {
          */
 
 
-        const allKeysOnObject = compareArrays(validProperties, paramsKeys)
-        console.log(allKeysOnObject)
-        return filterStatus({}, allKeysOnObject)
+        // Crear un listado de parametros no validos, he indicarle al usuario los que no corresponden
+        let paramsNotValid = []
+        for (const [key, value] of Object.entries(params)) {
+            const existParams = validProperties.find(item =>
+                item === key
+            )
+            if (!existParams) {
+                paramsNotValid.push(key)
+                return filterStatus(params, existParams, `the params is not valid ${key}`)
+            }
+
+        }
+
+        return filterStatus(params, true, `Parameter is valid ${paramsKeys}`)
 
     } else {
-        return filterStatus({}, false)
+        return filterStatus({}, false, `Params not found`)
     }
 
 }
-const filterStatus = (data = {}, filterContinue = false) => ({
+const filterStatus = (data = {}, filterContinue = false, message= '' ) => ({
     filterContinue,
-    data
+    data,
+    message
 })
 
 const objectUtils = {

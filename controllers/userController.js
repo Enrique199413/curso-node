@@ -4,7 +4,6 @@ const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 // CRUD . CREATE READ UPDATE DELETE
 
 const addUser= async (dataBody) => {
-    //TODO add user data
     try {
         const resposeUser = await fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', {
             method: 'POST',

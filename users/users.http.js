@@ -130,21 +130,23 @@ const deleteUserHttp = async (req, res) => {
 }
 
 const getUserHttpByParams = async (req, res) => {
-    //getAllUser().then(resultados => {
-    //console.log(req)
-    const {query: {name, lastName, surName}} = req
-    console.log('http: ',name, lastName, surName)
 
-    const {filterContinue, data
-    } = objectUtils.filterFinByParams({name, lastName, surName}, 'name', 'lastName', 'surName')
+    const {filterContinue, data, message
+    } = objectUtils.filterFinByParams(req.query, 'name', 'lastName', 'surName')
 
+    console.log(data)
+    if (!filterContinue) {
+        res.status(400).json({message})
+        return
+    }
     try {
-        const data = await getByParams({name, lastName, surName})
+        console.log('dfgb')
+        const getUserList = await getByParams(data)
         res.status(200).json({
-            data
+            getUserList
         })
     }catch (e) {
-        res.status(400).json({data: e})
+        res.status(400).json({getUserList: e})
     }
     //})
     //res.status(200).json({message: 'Ok desde getAllUserHttp'})
