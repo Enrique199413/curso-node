@@ -41,7 +41,7 @@ const existPropertiesOnObject = (body = {}, ...validProperties) => {
             return sendMessage(allKeysOnObject ? 'ok' : 'Keys are not equal', allKeysOnObject)
         }
     } else {
-        return sendMessage('Missing parameters')
+        return sendMessage('Missing parameters, empty')
     }
 }
 
@@ -63,11 +63,7 @@ const allKeysWithValidData = (body = {}) => {
 existPropertiesOnObject({}, 'name', 'lastName', 'surName')
 
 const filterFinByParams = (params = {}, ...validProperties) => {
-    console.log('dfbfdbvdbvbf')
-    console.log('params', params)
-    console.log('validProperties', validProperties)
     const paramsKeys = Object.keys(params)
-    console.log('paramsKeys', paramsKeys)
 
     /** Simplemente validar que tenga parametros*/
     if (existsKeysOnObject(paramsKeys)) {
