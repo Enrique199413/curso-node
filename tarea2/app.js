@@ -6,22 +6,41 @@ const airTableAPIkey = 'key30iKlvp6M1SGk0'
 
 
 app.get('/getTablesPersons', (req, res) => {
-    fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', { method: 'GET', headers: { 'Authorization': `Bearer ${airTableAPIkey}` } }).then(response => {
-        return response.json()
-    }).then(persons => {
-        const allPersons = res.status(200).json(persons)
-        console.log(allPersons)
-        return allPersons
-    })
+    fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion', { method: 'GET', headers: { 'Authorization': `Bearer ${airTableAPIkey}` } }).then(response => {
+            return response.json()
+        }).then(lenguages => {
+            const allLenguages = lenguages.records.filter(({ fields }) => fields.PersonasLenguajes)
+            allLenguages.map((lenguagePerson) => {
+                lenguagePerson.fields.PersonasLenguajes
+                console.log(personasLenguajesId)
+            })
+            res.status(200).json({
+                id: allLenguages
+            })
+        })
+        // .then()
+        // fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso', { method: 'GET', headers: { 'Authorization': `Bearer ${airTableAPIkey}` } }).then(response => {
+        //     return response.json()
+        // }).then(lenguagePerson => {
+        //     const personasLenguajes = lenguagePerson.records.filter(({ fields }) => fields.PersonasLenguajes)
+        //     personasLenguajes.map((persons) => {
+        //         const personasLenguajesId = persons.fields.PersonasLenguajes
+        //         console.log(personasLenguajesId)
+        //         return personasLenguajesId
+        //     })
+        //     res.status(200).json({ data: personasLenguajes })
+        // }).then()
+
+
 })
 
 app.get('/getTablesPrograming', (req, res) => {
     fetch('https://api.airtable.com/v0/appgiwqXmBRiTiCXK/LenguajesProgramacion', { method: 'GET', headers: { 'Authorization': `Bearer ${airTableAPIkey}` } }).then(response => {
         return response.json()
     }).then(lenguages => {
-        const allLenguagesId = lenguages.records.filter(({ id }) => id === 'recaT9Qs2TNBILIHa')
+        const allLenguages = lenguages.records.filter(({ fields }) => fields.PersonasLenguajes)
         return res.status(200).json({
-            id: allLenguagesId
+            id: allLenguages
         })
     }).then()
 })

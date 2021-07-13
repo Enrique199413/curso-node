@@ -5,10 +5,13 @@ const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
 let app = express();
 const { addUser, deleteUser, readUser } = require('./controllers/userController').User
 const programingLanguageRoutes = require('./controllers/programingLanguages/programingLanguage.router')
-app.use('/language', programingLanguageRoutes)
+const { usersRouter } = require('./users/users.router')
+const port = 8080;
 
 app.use(bodyParser.json());
-const port = 8080;
+app.use('/users', usersRouter)
+app.use('/language', programingLanguageRoutes)
+
 
 
 

@@ -18,7 +18,7 @@ const updateUser = async() => {
 const deleteUser = async(id) => {
     try {
         const responseUsers = await fetch(
-            'https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer key30iKlvp6M1SGk0' } })
+            `https://api.airtable.com/v0/appgiwqXmBRiTiCXK/Personas%20en%20el%20curso/records[]=${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer key30iKlvp6M1SGk0' } })
         const allUsers = await responseUsers.json()
         return allUsers;
     } catch (e) {
