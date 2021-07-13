@@ -24,8 +24,16 @@ const AIRTABLE_APIKEY = process.env.AIRTABLE_APIKEY
 const {addUser, updateUser, deleteUser, readUser} = require('./controllers/userController').User
 const authMiddleware = require('./middlewares/auth')
 const manageErros = require('./middlewares/manageErrors')
+const {usersRouter} = require('./users/users.router')
+
 //app.use(manageErros)
 //app.use(authMiddleware)
+
+app.use('/users', usersRouter)
+
+
+
+
 
 app.get('/hola-mundo/suma',(req,res) => {
   //console.log()
