@@ -46,6 +46,10 @@ Actividades/Tareas
 Agregar persona y eliminar a una persona conectandonos a Airtable
 
 # Cookie y LocalStorage - Martes
+R: Una cookie es un archivo de pequeño tamaño enviado por un sitio web y almacenado en el navegador del usuario, de manera que el sitio web puede consultar la actividad previa del navegador. Así, es posible identificar al usuario que visita un sitio web y llevar un registro de su actividad en el mismo.
+Existen diversas tipos de cookies como: Sesion, Persistencia, Seguras y Zoombies.
+
+R: LocalStorage: Se trata de un espacio de almacenamiento local. Puede almacenar entre 5 y 10 MB dependiendo del navegador web. La información almacenada con localStorage no es enviada al servidor en cada petición. No existe una caducidad para localStorage.
 
 # Modelar con rutas(a como lo tiene el banco)
 Personas en curso
