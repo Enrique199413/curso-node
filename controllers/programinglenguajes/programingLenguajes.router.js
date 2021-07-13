@@ -31,10 +31,13 @@ router
         console.log(getProgramingLanguajes)
         res.status(200).json(getProgramingLanguajes)
     })
-    .patch('/:id', (req, res) => {
-        res.status(200).json({
-            method: 'PATCH '
-        })
+    .patch('/:id', async (req, res) => {
+        console.log('Entrando al patch programing languages')
+        console.log('Entrando al get by id')
+        const {params: {id}} = req
+        const patchProgramingLanguajes = await programingLanguajes.updatePrograminLanguaages(id)
+        console.log(patchProgramingLanguajes)
+        res.status(200).json(patchProgramingLanguajes)
     })
 
 module.exports = router

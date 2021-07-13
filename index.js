@@ -12,16 +12,20 @@ const authMiddleware = require('./middleware/auth')
 const manageError = require('./middleware/manageError')
 const programingLanguageRoutes = require('./controllers/programinglenguajes/programingLenguajes.router')
 
+////
+const {userRouter} = require('./users/users.router')
+
+
+// Primero antes que todoo
+app.use(bodyParser.json())
+
 // Opcion 1
 // const UserController = require('./controllers/userController').User
 // comentar para el uso de routas
 //const {readUser, addUser, deleteUser} = require('./controllers/userController').User
 
-// Primero antes que todoo
-app.use(bodyParser.json())
-
 app.use('/programingLenguajes', programingLanguageRoutes)
-
+app.use('/users', userRouter)
 // ejemplo middleware por APPLICATION
 // el middleware agrega next a su estructura
 //app.use(authMiddleware)
@@ -274,7 +278,7 @@ app.post('/user/add', async (req, res) => {
 
     try {
         console.log(req)
-        const allUsers = await addUser(req.body)
+        const allUsers = await addUser()
 
         //console.log(allUsers, 'alll')
         //res.status(200).json(allUsers)
