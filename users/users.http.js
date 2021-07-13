@@ -1,4 +1,4 @@
-const { addUser, getAllUsers } = require('./users.controller')
+const { addUser, getAllUsers, upDateUser } = require('./users.controller')
 const { objectUtils } = require('../utils/utils')
 
 const addUserHttp = async (req, res) => {
@@ -15,6 +15,29 @@ const addUserHttp = async (req, res) => {
         res.status(201).json({
             code: 201, 
             userCreated: {
+                id: idFromUser//{id: 123123}
+            }
+        })
+    } catch (e) {
+        console.error(e)
+        res.status(400).json(e)
+    }
+}
+
+const upDateUserHttp = async (req, res) => {
+    const {
+        message: messageValidObjectStructure, 
+        canContinue: isValidBody
+    } = objectUtils.existPropertiesOnObject(req.body, 'name', 'lastName', 'surName')
+    if (!isValidBody) {
+        res.status(400).json({message: messageValidObjectStructure})
+        return
+    }
+    try {
+        const idFromUser = await upDateUser(req.params.id, req.body)
+        res.status(201).json({
+            code: 201, 
+            userUpDate: {
                 id: idFromUser//{id: 123123}
             }
         })
@@ -43,5 +66,6 @@ const getAllUserHttp = async(req, res) => {
 
 module.exports = {
     addUserHttp,
-    getAllUserHttp
+    getAllUserHttp,
+    upDateUserHttp
 }

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {addUserHttp, getAllUserHttp} = require('./users.http')
+const {addUserHttp, getAllUserHttp, upDateUserHttp} = require('./users.http')
 const { objectUtils } = require('../utils/utils')
 
 router.post('/', (req, res, next) => {
@@ -23,6 +23,7 @@ router.post('/', (req, res, next) => {
     next()
 },addUserHttp)
 
+router.put('/:id', upDateUserHttp)
 
 router.get('/', getAllUserHttp)
 

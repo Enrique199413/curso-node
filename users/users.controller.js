@@ -32,6 +32,27 @@ const addUser = async ({name, lastName, surName}) => {
     return users 
 }
 
+const upDateUser = async (_id ,{name, lastName, surName}) => {
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+
+    try {
+        await client.connect()
+        const userCollection = client.db('users').collection('users')
+        await userCollection.save({
+            _id, name, lastName, surName
+        })
+        return Promise.resolve({_id, name, lastName, surName})
+        
+        await client.close()
+
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+
+    } 
+    return 
+}
+
 const getAllUsers = () => {
 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -57,5 +78,6 @@ const getAllUsers = () => {
 
 module.exports = {
     addUser,
-    getAllUsers
+    getAllUsers,
+    upDateUser
 }
