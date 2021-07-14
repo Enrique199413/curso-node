@@ -1,6 +1,6 @@
 const uri = "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const e = require('express')
-const {MongoClient} = require('mongodb')
+const {MongoClient, ObjectId} = require('mongodb')
 
 const addUser = async ({name, lastName, surName}) => {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -53,6 +53,25 @@ const upDateUser = async (_id ,{name, lastName, surName}) => {
     return 
 }
 
+const deleteUser = async ({ _id }) => {
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    try {
+        
+        await client.connect()
+        const userCollection = client.db('users').collection('users')
+        const xc = await userCollection.deleteOne({
+            "_id": ObjectId(_id)
+        })
+        return Promise.resolve(xc.deletedCount)
+
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+
+    } 
+    return 
+}
+
 const getAllUsers = () => {
 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -79,5 +98,6 @@ const getAllUsers = () => {
 module.exports = {
     addUser,
     getAllUsers,
-    upDateUser
+    upDateUser,
+    deleteUser
 }

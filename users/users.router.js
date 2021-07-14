@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {addUserHttp, getAllUserHttp, upDateUserHttp} = require('./users.http')
+const {addUserHttp, getAllUserHttp, upDateUserHttp, deleteOneUserHttp} = require('./users.http')
 const { objectUtils } = require('../utils/utils')
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
@@ -51,5 +51,7 @@ router.post('/',passport.authenticate('local', {
 router.put('/:id', upDateUserHttp)
 
 router.get('/', getAllUserHttp)
+
+router.delete('/', deleteOneUserHttp)
 
 module.exports.usersRouter = router
