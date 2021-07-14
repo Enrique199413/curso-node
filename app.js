@@ -14,6 +14,7 @@ app.listen(port, () => {
 
 const bodyParser = require('body-parser')
 const express = require('express');
+const passport = require('passport')
 const { Logger } = require('mongodb');
 const fetch = require('node-fetch')
 require('dotenv').config();
@@ -25,6 +26,14 @@ const {addUser, updateUser, deleteUser, readUser} = require('./controllers/userC
 const authMiddleware = require('./middlewares/auth')
 const manageErros = require('./middlewares/manageErrors')
 const {usersRouter} = require('./users/users.router')
+
+const session = require("express-session")
+
+
+app.use(session({ secret: "nodegft" }))
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(passport.initialize())
+app.use(passport.session());
 
 //app.use(manageErros)
 //app.use(authMiddleware)
