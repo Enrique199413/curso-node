@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const fetch = require("node-fetch");
@@ -6,7 +6,7 @@ let app = express();
 const { addUser, deleteUser, readUser } =
   require("../controllers/userController").User;
 app.use(bodyParser.json());
-const newUser = require('./mocks/usersDataFake').data;
+const newUser = require("./mocks/usersDataFake").data;
 const AIRTABLE_APIKEY = process.env["AIRTABLE_APIKEY"];
 const port = process.env["PORT"];
 
@@ -31,7 +31,6 @@ app.get("/hola-mundo/suma", (req, res) => {
     });
   }
 });
-
 
 app.get("/getAirtableUsersWithEmail", (req, res) => {
   const options = {
