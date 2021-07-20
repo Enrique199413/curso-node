@@ -99,3 +99,6 @@ GET: http://localhost:<port>/users/?name=Enrique
 ```
 ### Contemplar cuando no tenga nada en la consulta y enviar un No Content (http Code 404)
 
+# Tarea para el 20 de Julio
+Pruebas unitarias al delete, update y search
+
