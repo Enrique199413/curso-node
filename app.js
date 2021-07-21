@@ -30,10 +30,9 @@ const {usersRouter} = require('./users/users.router')
 const session = require("express-session")
 
 
-app.use(session({ secret: "nodegft" }))
-app.use(bodyParser.urlencoded({ extended: false }))
+//app.use(session({ secret: "nodegft" }))
+//app.use(bodyParser.json())
 app.use(passport.initialize())
-app.use(passport.session());
 
 //app.use(manageErros)
 //app.use(authMiddleware)
@@ -231,7 +230,7 @@ app.get('/user/all', (req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Estamos trabajando en http://localhost:${port}`)
 })
 
 module.exports = app;
