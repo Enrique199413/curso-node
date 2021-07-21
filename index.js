@@ -11,14 +11,23 @@ const AIRTABLE_API_KEY = process.env['AIRTABLE_API_KEY']
 const authMiddleware = require('./middleware/auth')
 const manageError = require('./middleware/manageError')
 const programingLanguageRoutes = require('./controllers/programinglenguajes/programingLenguajes.router')
-
+const passport = require('passport')
 ////
-const {userRouter} = require('./users/users.router')
+const {userRouter} = require('./users/users.router/test')
+
+if (process.env.NODE_ENV === 'development') {
+    process.env.MONGO_DB_URI = 'mongodb://localhost:27000'
+} else {
+    MONGO_DB_URI = "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+}
+
 
 
 // Primero antes que todoo
 app.use(bodyParser.json())
-
+app.use(passport.initialize())
+app.use(passport.session())
 // Opcion 1
 // const UserController = require('./controllers/userController').User
 // comentar para el uso de routas

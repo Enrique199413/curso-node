@@ -1,8 +1,39 @@
 const {MongoClient} = require('mongodb')
 const ObjectID = require('mongodb').ObjectID;
 const {objectUtils} = require('../utils/utils')
+const uri = process.env.MONGO_DB_URI
+const mongoConection = require('../utils/mongo.utils')(uri)
 
-const uri = "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+console.log('validar la uri ', uri)
+const addUserConnectionClousure = async ({name, lastName, surName}) => {
+
+    try {
+        const {exec } = await mongoConection('users', 'users').connect()
+        const existUser = await exec('findOne', {name, lastName, surName})
+
+        console.log(existUser)
+
+        if (!existUser) {
+            exec('insertOne',{name, lastName, surName
+            }).then( insertedId => {
+                return Promise.resolve(insertedId)
+            })
+
+        }
+
+        await client.close()
+        return Promise.reject({
+            message: 'Cant create a register',
+            userExistWithID: existUser._id
+        })
+    } catch (e) {
+        console.error(e)
+        return Promise.reject(e)
+    }
+
+
+
+}
 
 const addUser = async ({name, lastName, surName}) => {
 // {surName, name, }
@@ -45,6 +76,7 @@ const addUser = async ({name, lastName, surName}) => {
 }
 
 const getAllUser = async () => {
+    console.log(uri, '----')
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
     try {
@@ -101,12 +133,21 @@ const updateUser = async (id, { name, lastName, surName}) => {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
     try {
+        console.log(name, lastName, surName, uri)
+        console.log('aqui entre')
         await client.connect()
         const userCollection = client.db('users').collection('users')
         // Validar si existe un usuario con los mismo valorres
-        const existUserValidID = await userCollection.findOne({
+        let filter = {
             '_id': ObjectID(id)
-        })
+        }
+        if (uri === 'mongodb://localhost:27017/users') {
+            // TODO only for test
+            filter = {'_id': id}
+        }
+
+        console.log(filter)
+        const existUserValidID = await userCollection.findOne(filter)
 
         const existUserByName = await userCollection.findOne({
             name, lastName, surName
@@ -118,7 +159,6 @@ const updateUser = async (id, { name, lastName, surName}) => {
             console.log('Not repet name, surname existen')
             if (existUserValidID) {
                 console.log('id existent and update')
-            const filter = {_id: ObjectID(id)}
             const updateDoc = {
                 $set: {
                     name,
@@ -154,14 +194,22 @@ const deleteUser = async (id) => {
     try {
         await client.connect()
         const userCollection = client.db('users').collection('users')
-        const existUserValidID = await userCollection.findOne({
+        let filter = {
             '_id': ObjectID(id)
-        })
+        }
+        if (uri === 'mongodb://localhost:27017/users') {
+            // TODO only for test
+            filter = {'_id': id}
+        }
+
+        console.log('Filter', filter)
+        const existUserValidID = await userCollection.findOne(filter)
+        console.log('existUserValidID', existUserValidID)
 
         if (existUserValidID) {
             let messageDelete = ''
             let statusDelete
-            const deleteUserStatus = await userCollection.deleteOne({_id: ObjectID(id)})
+            const deleteUserStatus = await userCollection.deleteOne(filter)
             console.log(deleteUserStatus)
             if (deleteUserStatus.deletedCount === 1) {
                 messageDelete =`Successfully deleted user by id ${id}, name: ${existUserValidID.name}`;
@@ -215,6 +263,10 @@ module.exports.getAllUser = getAllUser
 module.exports.updateUser = updateUser
 module.exports.deleteUser = deleteUser
 module.exports.getByParams = getByParams
+module.exports.addUserConnectionClousure = addUserConnectionClousure
+
+
+
 
 // De las dos formas es valido
 // module.exports = {

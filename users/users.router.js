@@ -1,13 +1,39 @@
 const router = require('express').Router()
 const {objectUtils} = require('../utils/utils')
 
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+
 const { addUserHttp,
     getAllUserHttp,
     addUserHttpMideleware,
     updateUserHttp,
     deleteUserHttp,
-    getUserHttpByParams
+    getUserHttpByParams,
+    addUserConnectionClousure
 } = require('./users.http')
+
+
+
+passport.use(new LocalStrategy({
+        username: 'username',
+        password: 'password'
+},
+    function(username, password, done) {
+        console.log(username, password, done)
+        if (username === 'enrique') {
+            done (null, 'ok')
+        } else {
+            done('ERROR')
+        }
+    }
+));
+
+router.post('/passport', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}), addUserHttpMideleware)
+
 
 router.post('/', (req, res, next) => {
     console.log('middleware')
@@ -30,13 +56,9 @@ router.post('/', (req, res, next) => {
     }
     next()
 }, addUserHttpMideleware)
+
 router.get('/', getAllUserHttp)
-/**
- * Tarea 2: Para el martes 13 de julio
- * Crear el método put en el router de users y actualizar un registro desde
- * un id dado en el params y mandar el update en el body, recordar utilizar las validaciones
- * router.put('/:id', getAllUsersHttp)
- */
+
 router.patch('/:id', (req, res, next) => {
     console.log('PATCH by id in params /:id')
     const {params: {id}} = req
@@ -60,10 +82,6 @@ router.patch('/:id', (req, res, next) => {
     next()
 }, updateUserHttp)
 
-/**
- * Tarea 3: Para el martes 13 de julio
- * Crear el método delete en el router de users y eliminar de bd
- */
 router.delete('/:id', (req, res, next) => {
     console.log('PATCH by id in params /:id')
     const {params: {id}} = req
@@ -74,16 +92,12 @@ router.delete('/:id', (req, res, next) => {
     }
     next()
 }, deleteUserHttp)
-
-/**
- * Tarea 4: Para el martes 13 de julio
- * Generar en el get la lectura de QueryParams para poder filtrar la información generando el siguiente contrato:
- *    GET: http://localhost:<port>/users/?name=Enrique
- *    GET: http://localhost:<port>/users/?lastName=Enrique
- *    GET: http://localhost:<port>/users/?surName=Enrique
- *    GET: http://localhost:<port>/users/?name=Enrique
- */
 router.get('/d', getUserHttpByParams)
+
+
+router.get('/conecct/clousure', addUserConnectionClousure)
+
+
 
 module.exports.userRouter = router
 
