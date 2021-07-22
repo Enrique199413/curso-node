@@ -7,8 +7,15 @@ const { addUser, deleteUser, readUser } = require('./controllers/userController'
 const programingLanguageRoutes = require('./controllers/programingLanguages/programingLanguage.router')
 const { usersRouter } = require('./users/users.router')
 const port = 8080;
+// const session = require("express-session")
+// 
+// app.use(bodyParser.json());
+// app.use(session({ secret: "cats" }));
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use(bodyParser.json());
+
 app.use('/users', usersRouter)
 app.use('/language', programingLanguageRoutes)
 

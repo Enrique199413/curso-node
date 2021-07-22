@@ -1,14 +1,31 @@
 const { MongoClient, ObjectId } = require('mongodb')
 const uri = "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const mongoConnection = require('../utils/mongo.utils')(uri)
 
+//por alguna razon no me sirve
 const addUser = async({ name, lastName, surName }) => {
-    const client = new MongoClient(uri, { useNewParser: true, useUnifiedTopology: true });
+    // const client = new MongoClient(uri, { useNewParser: true, useUnifiedTopology: true });
+    // try {
+    // await client.connect()
+    // const userCollection = client.db('users').collection('users')
+    // const { insertedId } = await userCollection.insertOne({ name, lastName, surName })
+    // await client.close()
+    // return Promise.resolve(insertedId)
+    // } catch (e) {
+    // console.error(e)
+    // return Promise.reject(e)
+    // }
     try {
-        await client.connect()
-        const userCollection = client.db('users').collection('users')
-        const { insertedId } = await userCollection.insertOne({ name, lastName, surName })
-        await client.close()
-        return Promise.resolve(insertedId)
+        const { exec: execUsers, closeCureentConnections } = await mongoConnection('users', 'users').connect()
+        const user = await execUsers('findOne', { name, lastname, surName })
+        if (!user) {
+            execUsers('insertOne', { name, lastName, surName }).then(insertedId => { return Promise.resolve(insertedId) })
+        }
+        await closeCureentConnections()
+        return Promise.reject({
+            message: 'Cant create a register',
+            userExistWithID: user._id
+        })
     } catch (e) {
         console.error(e)
         return Promise.reject(e)
@@ -27,7 +44,6 @@ const getAllUsers = () => {
                 console.log(element);
                 data.push(element);
             }).then(finish => {
-                console.log(finish, 'El resultado');
                 resolve(data);
                 client.close();
             })
@@ -36,7 +52,7 @@ const getAllUsers = () => {
     return users;
 }
 
-const updateUser = async(id, { name, lastName, surName }) => {
+const updateUser = async(id, { name }) => {
     const client = new MongoClient(uri, { useNewParser: true, useUnifiedTopology: true });
     try {
         await client.connect()
@@ -80,6 +96,7 @@ const getUserId = async(id) => {
     }
 }
 
+//otra forma de hacer el exports
 // module.exports.addUser = addUser
 // module.exports.getAllUsers = getAllUsers
 

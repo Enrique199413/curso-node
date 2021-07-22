@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const sinon = require('sinon')
 const faker = require('faker')
 const mocha = require('mocha')
-const utils = require('../utils')
+const utils = require('../utils/utils')
 
 chai.use(chaiHttp);
 
