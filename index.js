@@ -3,17 +3,29 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const dotenv = require('dotenv').config()
 const fetch = require('node-fetch')
+const setupAuthMiddleware = require('./middleware/index')
+
 let app = express()
+setupAuthMiddleware(app)
 //app.use(bodyParser.json())
 const port = 8080
 const AIRTABLE_API_KEY = process.env['AIRTABLE_API_KEY']
+
+////////
+const {userRouter} = require('./users/users.router')
+const {loginRouter} = require('./login/login.router')
+
+
+
+////////
 
 const authMiddleware = require('./middleware/auth')
 const manageError = require('./middleware/manageError')
 const programingLanguageRoutes = require('./controllers/programinglenguajes/programingLenguajes.router')
 const passport = require('passport')
 ////
-const {userRouter} = require('./users/users.router/test')
+
+
 
 if (process.env.NODE_ENV === 'development') {
     process.env.MONGO_DB_URI = 'mongodb://localhost:27000'
@@ -35,6 +47,7 @@ app.use(passport.session())
 
 app.use('/programingLenguajes', programingLanguageRoutes)
 app.use('/users', userRouter)
+app.use('/login', loginRouter)
 // ejemplo middleware por APPLICATION
 // el middleware agrega next a su estructura
 //app.use(authMiddleware)
