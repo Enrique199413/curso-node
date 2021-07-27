@@ -16,52 +16,52 @@ describe('Suite test get method', () => {
         const a = 10;
         const b = 10;
         chai.request(app).get('/hola-mundo/suma')
-        .query({
-            a,
-            b
-        })
-        .end( (err, response) => {
-            const responseNumber = response.text
-            assert.equal(responseNumber, `la suma de ${a} + ${b} es ${a + b}`)
-        })
+            .query({
+                a,
+                b
+            })
+            .end((err, response) => {
+                const responseNumber = response.text
+                assert.equal(responseNumber, `la suma de ${a} + ${b} es ${a + b}`)
+            })
     })
 
     it('Should be send queryParams and get sum from -a and -b', () => {
         const a = -1;
         const b = -1;
         chai.request(app).get('/hola-mundo/suma')
-        .query({
-            a,
-            b
-        })
-        .end( (err, response) => {
-            const responseNumber = response.text
-            assert.equal(responseNumber, `la suma de ${a} + ${b} es ${a + b}`)
-        })
+            .query({
+                a,
+                b
+            })
+            .end((err, response) => {
+                const responseNumber = response.text
+                assert.equal(responseNumber, `la suma de ${a} + ${b} es ${a + b}`)
+            })
     })
 
     it('Should be send queryParams and get sum from a and b are string', () => {
         const a = 'cien';
         const b = 'veinte';
         chai.request(app).get('/hola-mundo/suma')
-        .query({
-            a,
-            b
-        })
-        .end( (err, response) => {
-            const responseNumber = response.body
-            assert.deepEqual(responseNumber, errorCodes.errorWhenIsNotNumerics(a, b))
-        })
+            .query({
+                a,
+                b
+            })
+            .end((err, response) => {
+                const responseNumber = response.body
+                assert.deepEqual(responseNumber, errorCodes.errorWhenIsNotNumerics(a, b))
+            })
     })
 })
 
 describe('Test on getAirtableUsers', () => {
     it('if enviroment variable not exist', () => {
         chai.request(app)
-        .get('/getAirtableUsers')
-        .end( (err, response) => {
-            assert.equal(response, errorCodes.errorWhenEnviromentsNotExist)
-        })
+            .get('/getAirtableUsers')
+            .end((err, response) => {
+                assert.equal(response, errorCodes.errorWhenEnviromentsNotExist)
+            })
     })
 })
 
