@@ -3,28 +3,27 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 const passport = require('passport')
 
 const init = () => {
-    console.log('fdfdfdfdfdfd')
     const opts = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
         secretOrKey: 'nodeJSSecret'
-
     }
-    console.log(opts.jwtFromRequest)
-    console.log('init -----------')
     passport.use(new JwtStrategy(opts, (decoded, done) => {
-        console.log('-----------15 ', decoded)
         return done(null, decoded)
     }))
 }
 
 const protectWithJwt = (req, res, next) => {
-    console.log('protection', req.path)
     if (req.path === '/' || req.path === '/login') {
         return next()
     }
-    console.log('protfsvdvs')
 
-    return passport.authenticate('jwt', {session: false})(req, res, next)
+    return passport.authenticate('jwt', {session: false})
+        /*, function (err){
+        if (err) {
+            //console.log(err)
+            return next(res.status(401).json({message: 'Token not valid'}))
+        }
+    } */(req, res, next)
 }
 
 module.exports = {

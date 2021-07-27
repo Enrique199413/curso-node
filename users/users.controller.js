@@ -76,14 +76,14 @@ const addUser = async ({name, lastName, surName}) => {
 }
 
 const getAllUser = async () => {
-    console.log(uri, '----')
+    // console.log(uri, '----')
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
     try {
         await client.connect()
         const userCollection = client.db('users').collection('users')
         const cursorUsers = userCollection.find({})
-        console.log(cursorUsers)
+        // console.log(cursorUsers)
         const data = []
         await cursorUsers.forEach(item => {
             data.push(item)
@@ -93,7 +93,7 @@ const getAllUser = async () => {
         return Promise.resolve(data)
 
     } catch (e) {
-        console.error(e)
+        // console.error(e)
         return Promise.reject(e)
     }
 
@@ -134,8 +134,8 @@ const updateUser = async (id, { name, lastName, surName}) => {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
     try {
-        console.log(name, lastName, surName, uri)
-        console.log('aqui entre')
+        //console.log(name, lastName, surName, uri)
+        //console.log('aqui entre')
         await client.connect()
         const userCollection = client.db('users').collection('users')
         // Validar si existe un usuario con los mismo valorres
@@ -147,19 +147,19 @@ const updateUser = async (id, { name, lastName, surName}) => {
             filter = {'_id': id}
         }
 
-        console.log(filter)
+        //console.log(filter)
         const existUserValidID = await userCollection.findOne(filter)
 
         const existUserByName = await userCollection.findOne({
             name, lastName, surName
         })
 
-        console.log('existUserValidID', existUserValidID)
+        //console.log('existUserValidID', existUserValidID)
 
         if (!existUserByName) {
-            console.log('Not repet name, surname existen')
+            //console.log('Not repet name, surname existen')
             if (existUserValidID) {
-                console.log('id existent and update')
+                // console.log('id existent and update')
             const updateDoc = {
                 $set: {
                     name,
@@ -168,7 +168,7 @@ const updateUser = async (id, { name, lastName, surName}) => {
                 }
             }
             const {updateId} = await userCollection.updateOne(filter, updateDoc)
-                console.log(updateId)
+                //console.log(updateId)
             return Promise.resolve(updateId)
             }
 
@@ -181,7 +181,7 @@ const updateUser = async (id, { name, lastName, surName}) => {
             userNotExistWithID: id
         })
     } catch (e) {
-        console.error(e)
+        //console.error(e)
         return Promise.reject(e)
     }
 
@@ -203,15 +203,12 @@ const deleteUser = async (id) => {
             filter = {'_id': id}
         }
 
-        console.log('Filter', filter)
         const existUserValidID = await userCollection.findOne(filter)
-        console.log('existUserValidID', existUserValidID)
 
         if (existUserValidID) {
             let messageDelete = ''
             let statusDelete
             const deleteUserStatus = await userCollection.deleteOne(filter)
-            console.log(deleteUserStatus)
             if (deleteUserStatus.deletedCount === 1) {
                 messageDelete =`Successfully deleted user by id ${id}, name: ${existUserValidID.name}`;
                 statusDelete = 201
@@ -238,6 +235,7 @@ const deleteUser = async (id) => {
 }
 
 const getByParams = async (paramsFilter) => {
+    console.log('params', paramsFilter)
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
     try {

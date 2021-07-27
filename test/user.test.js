@@ -2,16 +2,6 @@ const mongoUnit = require('mongo-unit')
 const expect = require('chai').expect
 const allMockCollections = require('./mock/dbCollection.json')
 
-
-/**
- * Tarea: 20 de julio
- * Pruebas unitarias de user controller,
- * Agregar pruebas de los metodos previamente generados,
- * update
- * delete
- * get with params
- * No se valida coverage
- */
     let mongoUrl
     let userController
 /*mongoUnit.start({
@@ -61,7 +51,7 @@ describe('unit test user controller', () => {
     })
 
     beforeEach(() => {
-        console.log('afterEach')
+        //console.log('afterEach')
         mongoUnit.initDb(mongoUrl, allMockCollections)
     })
 
@@ -93,7 +83,7 @@ describe('unit test user controller', () => {
                 expect(users[3].lastName).to.equal('Callejas')
             })
         } catch (e) {
-            console.log('Esto es un error', e)
+            //console.log('Esto es un error', e)
             expect(e).deep.equal({error: ''})
         }
 
@@ -121,14 +111,14 @@ describe('unit test user controller', () => {
     })
 
     it('should by send data from new user CATCH REPET USER',  async () => {
-            console.log('Esto es un it')
+            //console.log('Esto es un it')
             try {
                 const userAdded = await userController.addUser({
                     name: 'Enrique3',
                     lastName: 'Enrique2',
                     surName: 'Enrique'
                 })
-                console.log('-----usuario agregado CATCH: ', userAdded)
+                // console.log('-----usuario agregado CATCH: ', userAdded)
 
                 const user = await userController.getAllUser()
                 //console.log('lista de usuario', user)
@@ -138,7 +128,7 @@ describe('unit test user controller', () => {
                 expect(user[4].surName).to.equal('surname')
                 resolve()
             }catch (e) {
-                console.log(e)
+                //console.log(e)
                 expect(e.message).deep.equal( 'Cant create a register')
 
             }
@@ -178,7 +168,7 @@ describe('unit test user controller', () => {
             expect(users[0].name).to.equal('Enrique1Updatte')
             expect(users[0].lastName).to.equal('hj')
             expect(users[0].surName).to.equal('Update')
-            console.log(users)
+            //console.log(users)
     })
 
     it('should by send data from new user update all data CATCH REPET USER',   async () => {
@@ -190,7 +180,7 @@ describe('unit test user controller', () => {
                 surName: 'Enrique'
             })
         } catch (e) {
-            console.log(e)
+            //console.log(e)
             expect(e.message).deep.equal( 'Cant update a register, because id not exist or data exist')
         }
 
@@ -205,7 +195,7 @@ describe('unit test user controller', () => {
                 surName: 'Enrique'
             })
         } catch (e) {
-            console.log(e)
+            //console.log(e)
             expect(e.message).deep.equal( 'Cant update a register, because id not exist or data exist')
         }
 
@@ -213,15 +203,15 @@ describe('unit test user controller', () => {
 
     it('should by delete a user by id',   async () => {
         return new Promise(async (resolve) => {
-            console.log('Esto es un it')
+            //console.log('Esto es un it')
             const user = await userController.getAllUser()
             //console.log(user[4])
-            console.log(user[3])
+            //console.log(user[3])
             const deleteUser = await userController.deleteUser(user[3]._id)
-            console.log('-----usuario borrado: ', deleteUser)
+            //console.log('-----usuario borrado: ', deleteUser)
 
 
-            console.log('lista de usuario', user)
+            //console.log('lista de usuario', user)
             expect(deleteUser.statusDelete).to.equal(201)
             resolve()
         })
@@ -231,10 +221,10 @@ describe('unit test user controller', () => {
 
         try {
             const deleteUser = await userController.deleteUser(234567)
-            console.log('-----usuario borrado: ', deleteUser)
+            //console.log('-----usuario borrado: ', deleteUser)
         } catch (e) {
 
-            console.log('delete de usuario not found', e)
+            //console.log('delete de usuario not found', e)
             expect(e.message).to.equal('Cant delete user, because not exist')
         }
 
@@ -242,13 +232,13 @@ describe('unit test user controller', () => {
 
     it('should by found name, lastname, surname',  async () => {
         return new Promise(async (resolve) => {
-            console.log('Esto es un it')
+            //console.log('Esto es un it')
             const findUser = await userController.getByParams({
                 name: 'Enrique2',
                 lastName: 'Enrique2',
                 surName: 'Enrique2'
             })
-            console.log('-----usuario encontrado: ',findUser)
+            //console.log('-----usuario encontrado: ',findUser)
             expect(findUser.count).to.equal(1)
             expect(findUser.data[0].name).to.equal('Enrique2')
             expect(findUser.data[0].lastName).to.equal('Enrique2')
@@ -259,11 +249,11 @@ describe('unit test user controller', () => {
 
     it('should by found surname',  async () => {
         return new Promise(async (resolve) => {
-            console.log('Esto es un it')
+            //console.log('Esto es un it')
             const findUser = await userController.getByParams({
                 surName: 'Enrique'
             })
-            console.log('-----usuario encontrado por surname: ',findUser)
+            //console.log('-----usuario encontrado por surname: ',findUser)
             expect(findUser.count).to.equal(3)
             expect(findUser.data[1].name).to.equal('Enrique3')
             expect(findUser.data[1].lastName).to.equal('Enrique2')
@@ -274,11 +264,11 @@ describe('unit test user controller', () => {
 
     it('should by found lastname',  async () => {
         return new Promise(async (resolve) => {
-            console.log('Esto es un it')
+            //console.log('Esto es un it')
             const findUser = await userController.getByParams({
                 lastName: 'Enrique2'
             })
-            console.log('-----usuario encontrado por surname: ',findUser)
+            //console.log('-----usuario encontrado por surname: ',findUser)
             expect(findUser.count).to.equal(2)
             expect(findUser.data[1].name).to.equal('Enrique3')
             expect(findUser.data[1].lastName).to.equal('Enrique2')
