@@ -8,8 +8,8 @@ const loginHttp = async (req, res) => {
     if (username && password) {
         const token = loginController.loginWithUsernameAndPassword(username, password)
 
-        const verify = loginController.verifyToken(token)
-        console.log(verify)
+        //const verify = loginController.verifyToken(token)
+        //console.log(verify)
         res.status(201).json(token)
     } else {
         res.status(403).json({message: 'Please send username and password'})

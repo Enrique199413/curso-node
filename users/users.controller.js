@@ -83,6 +83,7 @@ const getAllUser = async () => {
         await client.connect()
         const userCollection = client.db('users').collection('users')
         const cursorUsers = userCollection.find({})
+        console.log(cursorUsers)
         const data = []
         await cursorUsers.forEach(item => {
             data.push(item)

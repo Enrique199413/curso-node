@@ -12,6 +12,7 @@ const init = () => {
     console.log(opts.jwtFromRequest)
     console.log('init -----------')
     passport.use(new JwtStrategy(opts, (decoded, done) => {
+        console.log('-----------15 ', decoded)
         return done(null, decoded)
     }))
 }

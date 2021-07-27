@@ -5,24 +5,12 @@ const loginWithUsernameAndPassword = (username, password) => {
     const options = {
         expiresIn: "120ms"
     }
-    const token = jwt.sign({username, password}, 'nodeJSSecret', options)
+    const token = jwt.sign({username, password}, 'nodeJSSecret')
     return token
 
 }
 
-const verifyToken = (token) => {
-    jwt.verify(token, 'nodeJSSecret', function(err, decoded) {
-        if (err) {
-            return err
-            // err = {
-            //     name: 'TokenExpiredError',
-            //     message: 'jwt expired'
-            // }
-        }
-    });
-}
 
 module.exports = {
-    loginWithUsernameAndPassword,
-    verifyToken
+    loginWithUsernameAndPassword
 }

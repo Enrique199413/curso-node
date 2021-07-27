@@ -29,10 +29,10 @@ passport.use(new LocalStrategy({
     }
 ));
 
-router.post('/passport', passport.authenticate('local', {
+/*router.post('/passport', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login'
-}), addUserHttpMideleware)
+}), addUserHttpMideleware)*/
 
 
 router.post('/', (req, res, next) => {
@@ -95,7 +95,7 @@ router.delete('/:id', (req, res, next) => {
 router.get('/d', getUserHttpByParams)
 
 
-router.get('/conecct/clousure', addUserConnectionClousure)
+//router.get('/conecct/clousure', addUserConnectionClousure)
 
 
 
