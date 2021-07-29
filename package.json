@@ -4,9 +4,16 @@
   "description": "HolaMundo",
   "main": "holamundo.js",
   "scripts": {
-    "test": "mocha --delay",
+    "e2e-test": "mocha  test/*.e2e.*.js",
+    "unit-test": "mocha test/*.controller.*.js --delay",
     "start": "nodemon app.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.2.3",
+      "debug": "1"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -31,10 +38,5 @@
     "mongo-unit": "^2.0.1",
     "nyc": "^15.1.0",
     "sinon": "^11.1.1"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "debug": "1"
-    }
   }
 }

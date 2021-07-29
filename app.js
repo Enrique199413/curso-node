@@ -17,7 +17,9 @@ const express = require('express');
 const passport = require('passport')
 const { Logger } = require('mongodb');
 const fetch = require('node-fetch')
+const setupAuthMiddleware = require('./middlewares/index')
 require('dotenv').config();
+
 let app = express()
 app.use(bodyParser.json())
 const port = 8000
@@ -26,19 +28,22 @@ const {addUser, updateUser, deleteUser, readUser} = require('./controllers/userC
 const authMiddleware = require('./middlewares/auth')
 const manageErros = require('./middlewares/manageErrors')
 const {usersRouter} = require('./users/users.router')
+const {loginRouter} = require('./login/login.router')
 
-const session = require("express-session")
+//const session = require("express-session")
+
+///////setupAuthMiddleware(app)
 
 
 //app.use(session({ secret: "nodegft" }))
 //app.use(bodyParser.json())
-app.use(passport.initialize())
+//app.use(passport.initialize())
 
 //app.use(manageErros)
 //app.use(authMiddleware)
 
 app.use('/users', usersRouter)
-
+//app.use('/login', loginRouter)
 
 
 
