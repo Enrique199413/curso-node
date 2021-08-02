@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "_id": 123,
+      "name": "Enrique",
+      "lastName": "Enrique",
+      "surName": "Enrique"
+    },
+    {
+      "_id": 1234,
+      "name": "Enrique",
+      "lastName": "Enrique",
+      "surName": "Enrique"
+    },
+    {
+      "_id": "60ff22f4bdc9c0a3adc260b5",
+      "name": "Enrique",
+      "lastName": "Enrique",
+      "surName": "Enrique"
+    },
+    {
+      "_id": 1236,
+      "name": "Enrique",
+      "lastName": "Enrique",
+      "surName": "Enrique"
+    }
+  ]
+}

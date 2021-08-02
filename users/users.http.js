@@ -4,6 +4,7 @@ const {
   findUser,
   updateUser,
   deleteUser,
+  _addUser,
 } = require("./users.controller");
 
 const addUserHttp = async (req, res) => {
@@ -40,12 +41,12 @@ const updateUserHttp = async (req, res) => {
   const { id } = req.params;
   try {
     const lastUser = await updateUser(id, req.body);
+    console.log("LASTUSEER" + lastUser);
     res.status(201).json({
       lastUser,
       NewUser: req.body,
     });
   } catch (e) {
-    console.error(e);
     res.status(400).json(error);
   }
 };
@@ -55,15 +56,13 @@ const deleteUserHttp = async (req, res) => {
 
   try {
     const userDeleted = await deleteUser(id);
-    console.log(userDeleted);
     res.status(200).json({
       userDeleted: {
         id,
       },
     });
   } catch (e) {
-    console.error(e);
-    res.status(400).json(error);
+    res.status(400).json(e);
   }
 };
 

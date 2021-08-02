@@ -9,17 +9,6 @@ const { objectUtils } = require("../utils/utils");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
-passport.use(
-  new LocalStrategy(function (username, password, done) {
-    console.log(username, password, done);
-    if (username === "jordy") {
-      done(null, "ok");
-    } else {
-      done("ERROR");
-    }
-  })
-);
-
 // router.post(
 //   "/",
 //   passport.authenticate("local", { failureRedirect: "/login" }),

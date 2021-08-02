@@ -1,8 +1,73 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const uri =
+  process.env.MONGO_DB_URL ||
   "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-const addUser = async ({ name, lastName, surName }) => {
+const mongoConnection = require("../utils/mongo.utils")(uri, "users", "users");
+const cipher = require("../utils/cipher");
+
+const addUser = async ({ name, lastName, surName, password = "Jordy" }) => {
+  try {
+    const { exec, closeCurrentCollection } = await mongoConnection(
+      "users",
+      "users"
+    ).connect();
+    const user = await exec("findOne", {
+      name,
+      lastName,
+      surName,
+    });
+
+    if (!user) {
+      const { insertedId } = await exec("insertOne", {
+        name,
+        lastName,
+        surName,
+      });
+      console.log(insertedId);
+      return Promise.resolve(insertedId);
+    }
+    await closeCurrentCollection();
+    return Promise.reject({
+      message: "User already exist",
+      id: user._id,
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+  //   try {
+  //     cipher.hashPassword(password, async (error, passwordCipher) => {
+  //       console.log(passwordCipher);
+  //       const { exec, closeCurrentCollection } = await mongoConnection(
+  //         "users",
+  //         "users"
+  //       ).connect();
+  //       const user = await exec("findOne", {
+  //         name,
+  //         lastName,
+  //         surName,
+  //       });
+
+  //       if (!user) {
+  //         const { insertedId } = await exec("insertOne", {
+  //           name,
+  //           lastName,
+  //           surName,
+  //         });
+  //         return Promise.resolve(insertedId);
+  //       }
+  //       await closeCurrentCollection();
+  //       return Promise.reject({
+  //         message: "User already exist",
+  //         id: user._id,
+  //       });
+  //     });
+  //   } catch (error) {
+  //     return Promise.reject(error);
+  //   }
+};
+
+const _addUser = async ({ name, lastName, surName }) => {
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -22,12 +87,13 @@ const addUser = async ({ name, lastName, surName }) => {
     }
 
     await client.close();
+
     return Promise.reject({
       message: "User already exist",
       id: user._id,
     });
   } catch (error) {
-    reject(error);
+    console.log(error);
     return Promise.reject(error);
   }
 };
@@ -101,6 +167,7 @@ const updateUser = async (id, { name, lastName, surName }) => {
     await client.connect();
     const userCollection = client.db("users").collection("users");
     const existUser = await userCollection.findOne(filterById);
+    console.log(existUser);
     if (existUser != null) {
       const updatedUser = await userCollection.findOneAndUpdate(
         { _id: idUser },
@@ -121,13 +188,13 @@ const updateUser = async (id, { name, lastName, surName }) => {
       userExistWithId: existUser._id,
     });
   } catch (e) {
-    console.error(e);
     return Promise.reject(e);
   }
 };
 
 const deleteUser = async (id) => {
   const idUser = new ObjectId(id);
+
   const filterQry = { _id: idUser };
 
   const client = new MongoClient(uri, {
@@ -136,12 +203,13 @@ const deleteUser = async (id) => {
   });
 
   try {
+    console.log("entra try");
     await client.connect();
     const userCollection = client.db("users").collection("users");
     const delUser = await userCollection.deleteOne(filterQry);
+
     if (delUser.deletedCount === 1) {
       console.log("User deleted successfully");
-      console.log(delUser);
       return Promise.resolve(delUser);
     }
 
@@ -150,9 +218,15 @@ const deleteUser = async (id) => {
       message: "Id not exist, impossible delete user",
     });
   } catch (e) {
-    console.error(e);
     return Promise.reject(e);
   }
 };
 
-module.exports = { addUser, getAllUsers, findUser, updateUser, deleteUser };
+module.exports = {
+  addUser,
+  getAllUsers,
+  findUser,
+  updateUser,
+  deleteUser,
+  _addUser,
+};
