@@ -1,12 +1,16 @@
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const express = require('express');
 const fetch = require('node-fetch');
 const airtableAPIKey = process.env['AIRTABLE_APIKEY'];
-let app = express();
 const { addUser, deleteUser, readUser } = require('./controllers/userController').User
 const programingLanguageRoutes = require('./controllers/programingLanguages/programingLanguage.router')
+const setupAuthMiddleware = require('./middlewares/index')
 const { usersRouter } = require('./users/users.router')
+const { loginRouter } = require('./login/login.router')
 const port = 8080;
+let app = express();
+setupAuthMiddleware(app)
+
 // const session = require("express-session")
 // 
 // app.use(bodyParser.json());
@@ -17,6 +21,7 @@ const port = 8080;
 
 
 app.use('/users', usersRouter)
+app.use('/login', loginRouter)
 app.use('/language', programingLanguageRoutes)
 
 
