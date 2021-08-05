@@ -1,14 +1,15 @@
-const http = require('http');
-
-const hostname = 'localhost';
+const express = require('express');
+const setupAuthMiddleware = require('./middlewares/index')
+const { loginRouter } = require('./login/login.router')
 const port = 3000;
+let app = express();
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hola Mundo\n');
+setupAuthMiddleware(app)
+
+app.use('/api/login', loginRouter)
+
+app.listen(port, () => {
+    console.log(`Estamos en el puerto: ${port}`);
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});
+module.exports = app;
