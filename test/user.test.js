@@ -48,16 +48,18 @@ describe('unit test user controller', () => {
         })
     })
 
-    it('should by data from getAllUSe catch', async () => {
+    it('should by data from getAllUSe catch', async (done) => {
         try {
             await userController.getAllUser().then(users => {
                 expect(users.length).to.equal(4)
                 expect(users[3].name).to.equal('Enriqu4e')
                 expect(users[3]._id).to.equal(1236,)
                 expect(users[3].lastName).to.equal('Callejas')
+                done();
             })
         } catch (e) {
             expect(e).deep.equal({ error: '' })
+            done();
         }
 
 
