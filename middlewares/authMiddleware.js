@@ -8,7 +8,6 @@ const init = () => {
         secretOrKey: 'nodeJSSecret'
     }
     passport.use(new JwtStrategy(opt, (decoded, done) => {
-        console.log('passport decode')
         return done(null, decoded)
     }))
 }

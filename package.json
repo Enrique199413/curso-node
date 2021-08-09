@@ -4,7 +4,8 @@
     "description": "Examen node America",
     "main": "index.js",
     "scripts": {
-        "test": "mocha",
+        "e2e-test": "mocha test/*.e2e.*.js",
+        "unit-test": "mocha --delay",
         "start": "nodemon index"
     },
     "dependencies": {

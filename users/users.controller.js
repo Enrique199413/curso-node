@@ -1,39 +1,38 @@
 const { MongoClient } = require('mongodb')
 const uri = "mongodb+srv://curso-nodejs:curso-nodejs@cluster0.bdxrd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    // const uri = "mongodb+srv://america:tBKoZm7UEJtx9Qmt@cluster0.sfkzk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-const addUser = async({ email, password }) => {
-    console.log(email, password, 'contorller user')
+const registerUser = async({ username, password }) => {
     const client = new MongoClient(uri);
     try {
         await client.connect()
-        console.log('se conecta')
-            // const userCollection = client.db('users').collection('users')
-            // const existRegister = await userCollection.find({
-            // email,
-            // password
-            // })
-            // const user = []
-            // await existRegister.forEach(item => {
-            // console.log(item)
-            // user.push(item)
-            // })
-            // if (user.length === 0) {
-            // const { insertedId } = await userCollection.insertOne({
-            // email,
-            // password
-            // })
-            // return Promise.resolve(insertedId)
-            // }
+        const collectionUser = client.db('finalExam').collection('users')
+        const { insertedId } = await collectionUser.insertOne({
+            username,
+            password
+        })
         await client.close()
-            // return Promise.reject({
-            // message: "Not created",
-            // userExistWithID: user[0].id
-            // })
+        return Promise.resolve(insertedId)
     } catch (e) {
-        console.error(e)
         return Promise.reject(e)
     }
 }
 
-module.exports = { addUser }
+const getRegisterUser = async() => {
+    const client = new MongoClient(uri);
+    try {
+        await client.connect()
+        const collectionUser = client.db('finalExam').collection('users')
+        const allUsers = collectionUser.find({});
+        const dataUsers = []
+        allUsers.forEach(item => {
+            dataUsers.push(item);
+        })
+        await client.close()
+        return Promise.resolve(dataUsers)
+    } catch (e) {
+        return Promise.reject(e)
+    }
+}
+
+
+module.exports = { registerUser, getRegisterUser }

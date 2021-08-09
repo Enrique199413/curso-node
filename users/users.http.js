@@ -1,19 +1,26 @@
-const { addUser } = require('./users.controller')
+const { registerUser, getRegisterUser } = require('./users.controller')
 
-const addUsersHttp = async(req, res) => {
-    console.log('addUser')
-        // const { message, canContinues: isValidBody } = objectUtils.existPropertiesOnObject(res.body, 'email', 'surname')
-        // if (!isValidBody) {
-        // res.status(400).json({ message })
-        // return
-        // }
+const registerUserHttp = async(req, res) => {
     try {
-        const isUserAdd = await addUser(req.body)
-        console.log('sii')
-        res.status(202).json({ code: 201, userCreated: {...req.body, _id: isUserAdd } })
+        const idCreatedUser = await registerUser(req.body, 'username', 'password')
+        res.status(202).json({
+            code: 202,
+            _id: idCreatedUser,
+            username: req.body.username,
+            password: req.body.password
+        })
     } catch (e) {
-        res.status(400).json({ message: "Please add username and passwords" })
+        res.status(400).json(e)
     }
 }
 
-module.exports = { addUsersHttp }
+const getUserHttp = async(req, res) => {
+    try {
+        const getUsers = await getRegisterUser(req.body)
+        res.status(200).json({ code: 200, userUpdate: { getUsers } })
+    } catch (e) {
+        res.status(400).json({ message: 'Error' })
+    }
+}
+
+module.exports = { registerUserHttp, getUserHttp }

@@ -1,21 +1,9 @@
 const router = require('express').Router()
-const { addUsersHttp } = require('./users.http')
-    // const { objectUtils } = require('../utils/utils')
-    // const passport = require('passport')
-    // const LocalStrategy = require('passport-local').Strategy
+const { registerUserHttp, getUserHttp } = require('./users.http')
 
-// passport.use(new LocalStrategy((username, password, done) => {
-// console.log(username, password, done)
-// if (username === 'acirema@gmail.com') {
-// done(null, 'ok')
-// } else {
-// done('ERROR')
-// }
-// }));
+const validatePropertiesOnObject = require('../middlewares/authUser')
 
-
-// router.post('/', passport.authenticate('local', { failureRedirect: '/error' }), addUsersHttp)
-
-router.post('/', addUsersHttp)
+router.post('/', validatePropertiesOnObject, registerUserHttp)
+router.get('/', getUserHttp)
 
 module.exports.usersRouter = router
