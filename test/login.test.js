@@ -142,7 +142,7 @@ describe('Suit for valid JWT authenticate, (LOGIN / USERS)', () => {
 
     })
 
-    it.skip('Should be add user new . JWT OK', (done) => {
+    it('Should be add user new . JWT OK', (done) => {
         usernameNew = 'nombreRandom' + generateRandomInt(25)
         console.log(usernameNew, 'pppp')
         chai.request(app)
@@ -232,7 +232,7 @@ describe('Suit for Spaces, (LOGIN / spaces)', () => {
         mongoUnit.initDb(mongoUrl, allMockCollections)
     })
 
-    it('Should be get list spaces -  JWT OK', async (done) => {
+    it('Should be get list spaces -  JWT OK',  (done) => {
         // const lastUser = await userController.getByUsernamePassword({username: usernameNew, password: password})
         // console.log('lasr user', lastUser)
 
@@ -434,7 +434,7 @@ describe('Suit for Favorites, (LOGIN / favorites)', () => {
             .end((err, resLogin) => {
                 const token = JSON.parse(resLogin.text).token
                 chai.request(app)
-                    .get('/api/post/6102b5d92254e2b2f535b18e')
+                    .get('/api/favorites/6102b5d92254e2b2f535b18e')
                     .set('Authorization', `JWT ${token}`)
                     .end((err, res) => {
                         chai.assert.equal(res.statusCode, 200)
@@ -454,7 +454,7 @@ describe('Suit for Favorites, (LOGIN / favorites)', () => {
             .end((err, resLogin) => {
                 const token = JSON.parse(resLogin.text).token
                 chai.request(app)
-                    .get('/api/post/6102b4812254e2b2f535b187')
+                    .get('/api/favorites/6102b4812254e2b2f535b187')
                     .set('Authorization', `JWT ${token}`)
                     .end((err, res) => {
                         chai.assert.equal(res.statusCode, 200)
@@ -462,6 +462,131 @@ describe('Suit for Favorites, (LOGIN / favorites)', () => {
                     })
             })
 
+
+    })
+
+    it('Should be update favorite, ok - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .put('/api/favorites/6102b4812254e2b2f535b187')
+                    .send([
+                        "6102b5d92254e2b2f535b18e",
+                        "6102b4812254e2b2f535b187",
+                        "6102b4f42254e2b2f535b188"
+                    ])
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(res.statusCode, 200)
+                        done()
+                    })
+            })
+
+
+    })
+
+    it('Should be update favorite, space incorrect - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .put('/api/favorites/6102b4812254e2b2f535b187')
+                    .send([
+                        "6102b5d92254e2b2f535b18e",
+                        "spaceID2",
+                        "6102b4812254e2b2f535b187",
+                        "6102b4f42254e2b2f535b188"
+                    ])
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(res.statusCode, 200)
+                        done()
+                    })
+            })
+
+    })
+
+    it('Should be update favorite, favorite incorrect - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .put('/api/favorites/favoriteId')
+                    .send([
+                        "6102b5d92254e2b2f535b18e",
+                        "6102b4812254e2b2f535b187",
+                        "6102b4f42254e2b2f535b188"
+                    ])
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(res.statusCode, 200)
+                        done()
+                    })
+            })
+
+    })
+
+    it('Should be update favorite, list opf spaces empty - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .put('/api/favorites/610a2b9529a168bf1653d2b7')
+                    .send([])
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(JSON.parse(res.text).message, 'List is empty if you delete list of favorites please use DELETE method')
+                        done()
+                    })
+            })
+
+    })
+
+
+    /**
+     * Delete favorites
+     */
+
+    it('Should be delete favorite of user, delete favorite OK - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .delete('/api/favorites/6108c9bf4dd93ff67b6dcb3a')
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(JSON.parse(res.text).message, 'favorite list of userId deleted')
+                        done()
+                    })
+            })
+
+    })
+
+    it('Should be delete favorite, incorrect userId - JWT OK', (done) => {
+        chai.request(app)
+            .post('/api/login/')
+            .send({username: 'nombre4', password: 'password'})
+            .end((err, resLogin) => {
+                const token = JSON.parse(resLogin.text).token
+                chai.request(app)
+                    .delete('/api/favorites/6102b4812254e2b2f535b187')
+                    .set('Authorization', `JWT ${token}`)
+                    .end((err, res) => {
+                        chai.assert.equal(JSON.parse(res.text).message, 'IdUser hasn\'t get favorites list, please add first and then try deleted')
+                        done()
+                    })
+            })
 
     })
 })
