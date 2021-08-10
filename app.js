@@ -8,6 +8,7 @@ const app = express();
 const { userRoutes } = require("./routes/users/user");
 const { userFavorites } = require("./routes/favorites/favorite");
 const { loginRouter } = require("./routes/login/login");
+const { spacesRouter } = require("./routes/spaces/space");
 
 //middlewares
 
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use("/users", userRoutes);
 app.use("/favorites", userFavorites);
 app.use("/login", loginRouter);
+app.use("/spaces", spacesRouter);
 
 //exports
 
