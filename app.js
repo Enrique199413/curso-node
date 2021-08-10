@@ -6,6 +6,7 @@ const app = express();
 
 //Load routes
 const { userRoutes } = require("./routes/users/user");
+const { userFavorites } = require("./routes/favorites/favorite");
 
 //middlewares
 
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 
 //routes
 app.use("/users", userRoutes);
+app.use("/favorites", userFavorites);
 
 //exports
 
