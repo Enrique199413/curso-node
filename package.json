@@ -1,0 +1,31 @@
+{
+  "name": "curso-node",
+  "version": "1.0.0",
+  "description": "Para realizar el examen final se sacará de la branch `examen-final` y colocar el nombre de la persona, quedando de la siguiente manera:",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mongodb": "^3.6.10",
+    "node-fetch": "^2.6.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enrique199413/curso-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enrique199413/curso-node/issues"
+  },
+  "homepage": "https://github.com/Enrique199413/curso-node#readme"
+}
