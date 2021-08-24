@@ -1,0 +1,315 @@
+{
+  "users": [
+    {
+      "_id": "6108c9bf4dd93ff67b6dcb3a",
+      "username": "nombre",
+      "password": "password"
+    },
+    {
+      "_id": "61098548c1a252e815f8858f",
+      "username": "roci",
+      "password": "roci"
+    },
+    {
+      "_id": "610987d8efd27fe97732cf71",
+      "username": "chio",
+      "password": "chio"
+    },
+    {
+      "_id": "610988118f8894e9854e264f",
+      "username": "nombre4",
+      "password": "password"
+    }
+  ],
+  "favorites": [
+    {
+      "_id": "6108da85bac2f4441e548362",
+      "userId": "6108c9bf4dd93ff67b6dcb3a",
+      "favorites": []
+    },
+    {
+      "_id": "610a2b9529a168bf1653d2b7",
+      "userId": "610a2b4c29a168bf1653d2b6",
+      "favorites": []
+    },
+    {
+      "_id": "610b0f115c506afebd69f9a4",
+      "userId": "61098548c1a252e815f8858f",
+      "favorites": [
+        "6102b4812254e2b2f535b187"
+      ]
+    },
+    {
+      "_id": "610c9520d9b514c4b995e895",
+      "userId": "610b0dc01b99d16fb1b44707",
+      "favorites": [
+        "6102b4812254e2b2f535b187",
+        "6102b4f42254e2b2f535b188",
+        "6102b4f42254e2b2f535b188",
+        "6102b5042254e2b2f535b189"
+      ]
+    },
+    {
+      "_id": "610dae76bbf2d6809d7605d4",
+      "userId": "610dac06a58490801e4e27f7",
+      "favorites": [
+        "6102b5042254e2b2f535b189",
+        "6102b50b2254d2b2f535b18a",
+        "6102b4812254e2b2f535b187",
+        "6102b4f42254e2b2f535b188"
+      ]
+    }
+  ],
+  "spaces":[
+    {
+      "_id": "6102b4812254e2b2f535b187",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b4f42254e2b2f535b188",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 2, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5042254e2b2f535b189",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 3, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b50b2254e2b2f535b18a",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 4, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5b02254e2b2f535b18b",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 5, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5b92254e2b2f535b18c",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 6, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5c02254e2b2f535b18d",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 7, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5d92254e2b2f535b18e",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 8, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5df2254e2b2f535b18f",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 9, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    },
+    {
+      "_id": "6102b5e62254e2b2f535b190",
+      "listing_url": "https://www.airbnb.com/rooms/10059872",
+      "name": "Soho Cozy 10, Spacious and Convenient",
+      "summary": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "description": "Clean, fully furnish, Spacious 1 bedroom flat just off the escalator in Mid Levels. 2 minutes From Soho Bar and Restaurants. Located in a quiet alley 1 minute from Sun Yat Sen",
+      "property_type": "Apartment",
+      "room_type": "Entire home/apt",
+      "minimum_nights": "4",
+      "maximum_nights": "20",
+      "cancellation_policy": "flexible",
+      "accommodates": 3,
+      "bedrooms": 1,
+      "beds": 2,
+      "number_of_reviews": 3,
+      "bathrooms": {
+        "$numberDecimal": "1.0"
+      },
+      "price": {
+        "$numberDecimal": "699.00"
+      },
+      "weekly_price": {
+        "$numberDecimal": "5000.00"
+      }
+    }
+  ]
+}
