@@ -1,0 +1,40 @@
+{
+  "name": "examen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha -- test/users.test.js --delay",
+    "start": "nodemon index.js",
+    "cov": "nyc --reporter=lcov --reporter=text-summary npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+hhttps://github.com/Enrique199413/curso-node/tree/Jordy"
+  },
+  "author": "Jordy",
+  "license": "ISC",
+  "homepage": "https://github.com/Enrique199413/curso-node#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.10",
+    "mongoose": "^5.13.5",
+    "node-fetch": "^2.6.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "mongo-unit": "^2.0.1",
+    "nodemon": "^2.0.9"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "debug": "1"
+    }
+  }
+}
