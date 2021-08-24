@@ -1,0 +1,17 @@
+{
+    "nombre" : "Examen Final Api Rest - Desarrollo",
+    "Mongo" : {
+        "dbConfig" : {
+            "host" : "mongodb://localhost",
+            "port" : "27017",
+            "dbName" : "finalExam"
+        },
+        "uriConfig" : {
+            "uri" : "mongodb://localhost:27017/finalExam"
+        }
+    },
+    "configToken": {
+        "SEED": "mySecret",
+        "expiration": "1h"
+    }
+}
